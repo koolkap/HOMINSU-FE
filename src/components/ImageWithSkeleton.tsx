@@ -7,6 +7,7 @@ interface ImageWithSkeletonProps {
   height?: number
   className?: string
   rounded?: string
+  src?: string
 }
 
 /**
@@ -23,9 +24,12 @@ export default function ImageWithSkeleton({
   height = 320,
   className = '',
   rounded = 'rounded-2xl',
+  src: providedSrc,
 }: ImageWithSkeletonProps) {
   const [loaded, setLoaded] = useState(false)
-  const src = `https://picsum.photos/seed/${encodeURIComponent(seed)}/${width}/${height}`
+  const [failed, setFailed] = useState(false)
+  const fallbackSrc = `https://picsum.photos/seed/${encodeURIComponent(seed)}/${width}/${height}`
+  const src = providedSrc && !failed ? providedSrc : fallbackSrc
 
   return (
     <div className={`relative overflow-hidden ${rounded} ${className}`}>
@@ -35,6 +39,12 @@ export default function ImageWithSkeleton({
         alt={alt}
         loading="lazy"
         onLoad={() => setLoaded(true)}
+        onError={() => {
+          if (providedSrc && !failed) {
+            setFailed(true)
+            setLoaded(false)
+          }
+        }}
         className={`h-full w-full object-cover transition-opacity duration-500 ease-out ${
           loaded ? 'opacity-100' : 'opacity-0'
         }`}

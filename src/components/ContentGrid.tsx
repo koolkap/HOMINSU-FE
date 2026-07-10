@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { contentItems } from '../data/mockData'
 import ContentCard from './ContentCard'
+import type { ContentItem } from '../types'
 
 const sorts = [
   { id: 'latest', label: '최신' },
@@ -8,7 +8,7 @@ const sorts = [
   { id: 'rating', label: '별점' },
 ] as const
 
-export default function ContentGrid() {
+export default function ContentGrid({ items }: { items: ContentItem[] }) {
   const [sort, setSort] = useState<(typeof sorts)[number]['id']>('latest')
 
   return (
@@ -18,7 +18,7 @@ export default function ContentGrid() {
           <h2 className="font-display text-base font-bold text-mist-100 sm:text-lg">
             전체 콘텐츠{' '}
             <span className="ml-1 text-sm font-medium text-mist-500">
-              {contentItems.length}개
+              {items.length}개
             </span>
           </h2>
           <div className="flex gap-1 rounded-full bg-ink-800 p-1">
@@ -39,7 +39,7 @@ export default function ContentGrid() {
         </div>
 
         <div className="grid grid-cols-2 gap-x-3 gap-y-6 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
-          {contentItems.map((item) => (
+          {items.map((item) => (
             <ContentCard key={item.id} item={item} />
           ))}
         </div>

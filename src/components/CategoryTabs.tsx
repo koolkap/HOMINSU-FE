@@ -1,11 +1,12 @@
-import { categories } from '../data/mockData'
+import type { Category } from '../types'
 
 interface CategoryTabsProps {
   active: string
   onChange: (id: string) => void
+  categories: Category[]
 }
 
-export default function CategoryTabs({ active, onChange }: CategoryTabsProps) {
+export default function CategoryTabs({ active, onChange, categories }: CategoryTabsProps) {
   return (
     <div className="mt-4 px-4 sm:px-6 lg:px-10 md:mt-6">
       <div className="mx-auto max-w-[1600px]">

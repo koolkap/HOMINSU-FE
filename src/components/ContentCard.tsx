@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Heart, Star } from 'lucide-react'
 import type { ContentItem } from '../types'
 import ImageWithSkeleton from './ImageWithSkeleton'
+import { Link } from 'react-router-dom'
 
 function formatViews(n: number) {
   return n >= 10000 ? `${(n / 10000).toFixed(1)}만` : n >= 1000 ? `${(n / 1000).toFixed(1)}K` : `${n}`
@@ -13,13 +14,16 @@ export default function ContentCard({ item }: { item: ContentItem }) {
   return (
     <div className="group">
       <div className="relative">
+        <Link to={`/content/${item.id}`} aria-label={`${item.title} 상세 보기`}>
         <ImageWithSkeleton
           seed={item.imageSeed}
           alt={item.title}
           width={480}
           height={340}
           className="aspect-[4/3] ring-1 ring-white/5 transition-transform duration-300 group-hover:scale-[1.015]"
+          src={item.imageUrl}
         />
+        </Link>
         <span className="absolute bottom-2 left-2 rounded-md bg-black/60 px-1.5 py-0.5 text-[11px] font-medium text-white backdrop-blur-sm">
           {item.duration}
         </span>
@@ -41,7 +45,7 @@ export default function ContentCard({ item }: { item: ContentItem }) {
       </div>
 
       <h3 className="mt-2 line-clamp-1 text-[13.5px] font-semibold text-mist-100">
-        {item.title}
+        <Link to={`/content/${item.id}`} className="hover:text-white">{item.title}</Link>
       </h3>
       <p className="mt-0.5 line-clamp-1 text-xs text-mist-500">{item.provider}</p>
       <div className="mt-1 flex items-center gap-1.5 text-xs text-mist-500">

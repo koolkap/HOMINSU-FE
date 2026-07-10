@@ -1,4 +1,4 @@
-import type { Category, ContentItem, LiveItem } from '../types'
+import type { Category, ContentItem, Device, LiveItem, PointPackage, UserProfile, Wallet } from '../types'
 
 export const categories: Category[] = [
   { id: 'all', label: '전체' },
@@ -103,4 +103,33 @@ export const contentItems: ContentItem[] = [
     duration: '15:00',
     imageSeed: 'iss-docking',
   },
+]
+
+export const mockWallet: Wallet = {
+  balance: 2350,
+  currency: 'P',
+  transactions: [
+    { id: 'tx-1', label: '신규 콘텐츠 잠금 해제', amount: -400, createdAt: '2026-07-09' },
+    { id: 'tx-2', label: '주간 미션 보상', amount: 500, createdAt: '2026-07-07' },
+  ],
+}
+
+export const pointPackages: PointPackage[] = [
+  { id: 'point-1000', points: 1000, price: 10000 },
+  { id: 'point-3000', points: 3300, price: 30000, bonus: 300 },
+  { id: 'point-5000', points: 5700, price: 50000, bonus: 700 },
+]
+
+export const mockProfile: UserProfile = {
+  id: 'user-demo',
+  name: '민수',
+  email: 'minsu@example.com',
+  role: 'Explorer',
+  joinedAt: '2025-11-18',
+}
+
+export const mockDevices: Device[] = [
+  { id: 'vr-01', name: 'HMD Station 01', location: '강남 VR A룸', status: 'online', lastSync: '방금 전' },
+  { id: 'vr-02', name: 'HMD Station 02', location: '강남 VR A룸', status: 'warning', lastSync: '8분 전' },
+  { id: 'vr-03', name: 'HMD Station 03', location: '성수 팝업', status: 'offline', lastSync: '2시간 전' },
 ]

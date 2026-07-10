@@ -1,4 +1,5 @@
 import { Search } from 'lucide-react'
+import { Link, NavLink } from 'react-router-dom'
 
 type TopBarProps = {
   onLoginClick: () => void
@@ -10,16 +11,16 @@ export default function TopBar({ onLoginClick }: TopBarProps) {
       <div className="mx-auto flex max-w-[1600px] items-center gap-6">
         {/* logo + primary nav */}
         <div className="flex items-center gap-8">
-          <h1 className="font-display text-lg font-extrabold tracking-tight text-mist-100 lg:text-xl">
+          <Link to="/" className="font-display text-lg font-extrabold tracking-tight text-mist-100 lg:text-xl">
             홈인슈
-          </h1>
+          </Link>
           <nav className="hidden items-center gap-6 text-sm font-medium text-mist-300 md:flex">
-            <a href="#" className="text-mist-100 transition-colors hover:text-white">
+            <NavLink to="/" className="text-mist-100 transition-colors hover:text-white">
               홈
-            </a>
-            <a href="#" className="transition-colors hover:text-mist-100">
-              검색
-            </a>
+            </NavLink>
+            <NavLink to="/live" className="transition-colors hover:text-mist-100">라이브</NavLink>
+            <NavLink to="/shorts" className="transition-colors hover:text-mist-100">쇼츠</NavLink>
+            <NavLink to="/points" className="transition-colors hover:text-mist-100">포인트</NavLink>
           </nav>
         </div>
 

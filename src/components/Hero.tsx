@@ -1,5 +1,6 @@
 import { Info, Play } from 'lucide-react'
 import ImageWithSkeleton from './ImageWithSkeleton'
+import { Link } from 'react-router-dom'
 
 export default function Hero() {
   return (
@@ -27,14 +28,14 @@ export default function Hero() {
             서울의 미래를 8K VR로 직접 체험하세요. 지금 가장 핫한 라이브.
           </p>
           <div className="mt-8 flex items-center gap-3">
-            <button className="flex items-center gap-2 rounded-lg bg-signal px-6 py-3 text-sm font-bold text-white shadow-glow transition-transform hover:scale-[1.03]">
+            <Link to="/content/content-1" className="flex items-center gap-2 rounded-lg bg-signal px-6 py-3 text-sm font-bold text-white shadow-glow transition-transform hover:scale-[1.03]">
               <Play size={16} fill="currentColor" strokeWidth={0} />
               시청하기
-            </button>
-            <button className="flex items-center gap-2 rounded-lg bg-white/10 px-6 py-3 text-sm font-bold text-white backdrop-blur-sm transition-colors hover:bg-white/15">
+            </Link>
+            <Link to="/content/content-1" className="flex items-center gap-2 rounded-lg bg-white/10 px-6 py-3 text-sm font-bold text-white backdrop-blur-sm transition-colors hover:bg-white/15">
               <Info size={16} strokeWidth={2.3} />
               상세 정보
-            </button>
+            </Link>
           </div>
         </div>
       </div>

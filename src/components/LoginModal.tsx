@@ -1,5 +1,6 @@
-import { type FormEvent, useEffect } from 'react'
+import { type FormEvent, useEffect, useState } from 'react'
 import { LockKeyhole, Mail, X } from 'lucide-react'
+import { login } from '../lib/api'
 
 type LoginModalProps = {
   open: boolean
@@ -8,6 +9,8 @@ type LoginModalProps = {
 }
 
 export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps) {
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
   useEffect(() => {
     if (!open) {
       return
@@ -34,22 +37,32 @@ export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps
     return null
   }
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    onSuccess()
+    setLoading(true)
+    setError('')
+    const form = new FormData(event.currentTarget)
+    try {
+      await login(String(form.get('email')), String(form.get('password')))
+      onSuccess()
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : '로그인에 실패했습니다.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
     <div
       className="fixed inset-0 z-[60] flex items-end justify-center bg-ink-950/80 px-4 pb-4 pt-16 backdrop-blur-sm sm:items-center sm:py-6"
-      onMouseDown={onClose}
+      onClick={onClose}
     >
       <section
         role="dialog"
         aria-modal="true"
         aria-labelledby="login-modal-title"
         className="w-full max-w-md overflow-hidden rounded-[2rem] border border-white/10 bg-ink-900 shadow-card"
-        onMouseDown={(event) => event.stopPropagation()}
+        onClick={(event) => event.stopPropagation()}
       >
         <div className="relative overflow-hidden border-b border-white/5 px-6 pb-6 pt-7">
           <div className="absolute -right-16 -top-20 h-40 w-40 rounded-full bg-signal/25 blur-3xl" />
@@ -125,14 +138,13 @@ export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps
 
           <button
             type="submit"
-            className="w-full rounded-2xl bg-signal px-5 py-3.5 text-sm font-extrabold text-white shadow-glow transition-transform hover:scale-[1.01] active:scale-[0.99]"
+            disabled={loading}
+            className="w-full rounded-2xl bg-signal px-5 py-3.5 text-sm font-extrabold text-white shadow-glow transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:cursor-wait disabled:opacity-60"
           >
-            로그인
+            {loading ? '로그인 중...' : '로그인'}
           </button>
 
-          <p className="text-center text-xs leading-5 text-mist-500">
-            현재는 API 연동 전 단계로, 입력 확인 후 성공 알림만 표시됩니다.
-          </p>
+          {error && <p role="alert" className="rounded-xl border border-signal/20 bg-signal/10 p-3 text-center text-xs leading-5 text-red-300">{error}</p>}
         </form>
       </section>
     </div>
