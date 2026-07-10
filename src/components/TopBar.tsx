@@ -1,6 +1,10 @@
 import { Search } from 'lucide-react'
 
-export default function TopBar() {
+type TopBarProps = {
+  onLoginClick: () => void
+}
+
+export default function TopBar({ onLoginClick }: TopBarProps) {
   return (
     <header className="sticky top-0 z-30 border-b border-white/5 bg-ink-950/90 px-4 pb-3 pt-[max(0.75rem,env(safe-area-inset-top))] backdrop-blur-md sm:px-6 lg:px-10">
       <div className="mx-auto flex max-w-[1600px] items-center gap-6">
@@ -37,14 +41,22 @@ export default function TopBar() {
 
         {/* right side: login (desktop) */}
         <div className="ml-auto hidden md:block">
-          <button className="rounded-full bg-signal px-5 py-2.5 text-sm font-bold text-white shadow-glow transition-transform hover:scale-[1.03]">
+          <button
+            type="button"
+            onClick={onLoginClick}
+            className="rounded-full bg-signal px-5 py-2.5 text-sm font-bold text-white shadow-glow transition-transform hover:scale-[1.03]"
+          >
             로그인
           </button>
         </div>
 
         {/* mobile-only right side */}
         <div className="ml-auto flex items-center gap-3 md:hidden">
-          <button className="rounded-full bg-signal px-4 py-2 text-xs font-bold text-white shadow-glow">
+          <button
+            type="button"
+            onClick={onLoginClick}
+            className="rounded-full bg-signal px-4 py-2 text-xs font-bold text-white shadow-glow"
+          >
             로그인
           </button>
         </div>
