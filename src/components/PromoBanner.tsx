@@ -33,8 +33,8 @@ export default function PromoBanner() {
   const slide = slides[index]
 
   return (
-    <div className="px-4 pt-4 sm:px-6">
-      <div className="mx-auto max-w-6xl">
+    <div className="px-4 pt-4 sm:px-6 md:hidden">
+      <div className="mx-auto max-w-[1600px]">
         <div className="relative h-32 overflow-hidden rounded-2xl bg-gradient-to-br from-rose-deep via-rose-bright to-pulse sm:h-40">
           <div
             className="pointer-events-none absolute -right-8 -top-10 h-40 w-40 rounded-full bg-white/10 blur-2xl"

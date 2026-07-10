@@ -7,8 +7,8 @@ interface CategoryTabsProps {
 
 export default function CategoryTabs({ active, onChange }: CategoryTabsProps) {
   return (
-    <div className="mt-4 px-4 sm:px-6">
-      <div className="mx-auto max-w-6xl">
+    <div className="mt-4 px-4 sm:px-6 lg:px-10 md:mt-6">
+      <div className="mx-auto max-w-[1600px]">
         <div className="scroll-row flex gap-2 overflow-x-auto pb-1">
           {categories.map((c) => {
             const isActive = c.id === active

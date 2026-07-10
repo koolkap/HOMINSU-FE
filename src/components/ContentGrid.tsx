@@ -12,8 +12,8 @@ export default function ContentGrid() {
   const [sort, setSort] = useState<(typeof sorts)[number]['id']>('latest')
 
   return (
-    <section className="mt-7 px-4 pb-24 sm:px-6 md:pb-12">
-      <div className="mx-auto max-w-6xl">
+    <section className="mt-7 px-4 pb-24 sm:px-6 md:pb-16 lg:px-10">
+      <div className="mx-auto max-w-[1600px]">
         <div className="mb-3 flex items-center justify-between">
           <h2 className="font-display text-base font-bold text-mist-100 sm:text-lg">
             전체 콘텐츠{' '}
@@ -38,7 +38,7 @@ export default function ContentGrid() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-x-3 gap-y-6 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        <div className="grid grid-cols-2 gap-x-3 gap-y-6 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
           {contentItems.map((item) => (
             <ContentCard key={item.id} item={item} />
           ))}

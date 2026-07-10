@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import TopBar from './components/TopBar'
+import Hero from './components/Hero'
 import PromoBanner from './components/PromoBanner'
 import CategoryTabs from './components/CategoryTabs'
 import LiveSection from './components/LiveSection'
@@ -14,6 +15,7 @@ export default function App() {
       <TopBar />
 
       <main>
+        <Hero />
         <PromoBanner />
         <CategoryTabs active={activeCategory} onChange={setActiveCategory} />
         <LiveSection />
