@@ -34,7 +34,7 @@ export const i18nReady = i18n.use(initReactI18next).init({
   fallbackLng: 'ko',
   supportedLngs: ['ko', 'en'],
   interpolation: { escapeValue: false },
-  initImmediate: false,
+  initAsync: false,
 })
 
 i18n.on('languageChanged', updateDocument)

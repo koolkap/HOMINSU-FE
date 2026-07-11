@@ -62,7 +62,7 @@ export function LivePage() {
     <ConsumerHeader title={t('livePage.title')} />
     <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6">
       <div className="mb-6 overflow-hidden rounded-3xl border border-signal/20 bg-gradient-to-br from-signal/25 via-ink-900 to-ink-950 p-6 sm:p-9">
-        <div className="flex items-center gap-2 text-xs font-extrabold tracking-[0.2em] text-signal"><Radio size={15} /> LIVE NOW</div>
+        <div className="flex items-center gap-2 text-xs font-extrabold tracking-[0.2em] text-signal"><Radio size={15} /> {t('catalog.liveNow').toUpperCase()}</div>
         <h2 className="mt-3 max-w-xl text-2xl font-extrabold text-white sm:text-4xl">{t('livePage.headlineLine1')}<br />{t('livePage.headlineLine2')}</h2>
         <p className="mt-3 text-sm text-mist-300">{loading ? t('livePage.loading') : t('common.channelCount', { count: live.length })}{isMock && ` · ${t('common.offlinePreview')}`}</p>
       </div>
@@ -128,7 +128,7 @@ export function ContentDetailPage() {
         <div className="absolute inset-0 flex items-center justify-center">
           {unlocked ? <button aria-label={t('detail.play')} className="flex h-16 w-16 items-center justify-center rounded-full bg-signal shadow-glow"><Play className="ml-1" fill="currentColor" /></button> : <div className="text-center"><span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-white/20 bg-black/45 backdrop-blur"><LockKeyhole /></span><p className="mt-3 text-sm font-bold">{t('detail.previewEnded')}</p></div>}
         </div>
-        <span className="absolute bottom-4 left-4 rounded bg-black/50 px-2 py-1 text-xs">PREVIEW 00:30</span>
+        <span className="absolute bottom-4 left-4 rounded bg-black/50 px-2 py-1 text-xs">{t('detail.preview').toUpperCase()} 00:30</span>
       </div>
       <div className="mt-6 grid gap-8 lg:grid-cols-[1fr_340px]">
         <div><div className="flex gap-2 text-xs font-bold text-signal"><span>8K VR</span><span>·</span><span>{item.duration}</span>{isMock && <span>· {t('common.offlinePreview').toUpperCase()}</span>}</div><h1 className="mt-2 text-2xl font-extrabold text-white sm:text-4xl">{loading ? t('common.loading') : item.title}</h1><p className="mt-2 text-sm text-mist-300">{item.provider} · {t('common.rating', { rating: new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }).format(item.rating) })} · {t('common.views', { count: new Intl.NumberFormat(locale).format(item.views) })}</p><p className="mt-6 max-w-2xl leading-7 text-mist-300">{item.description || t('detail.defaultDescription')}</p></div>

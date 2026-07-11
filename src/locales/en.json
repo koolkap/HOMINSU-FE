@@ -4,7 +4,7 @@
   "common": {
     "home": "Home", "live": "Live", "shorts": "Shorts", "points": "Points", "my": "MY",
     "login": "Log in", "loading": "Loading...", "processing": "Processing...", "offlinePreview": "Offline preview",
-    "viewAll": "View all", "backHome": "Back to home", "views": "{{count}} views", "rating": "Rating {{rating}}",
+    "viewAll": "View all", "backHome": "Back to home", "views": "{{count}} views", "rating": "Rating {{rating}}", "role": { "member": "Member", "operator": "Operator", "admin": "Admin" },
     "itemCount_one": "{{count}} item", "itemCount_other": "{{count}} items", "channelCount_one": "{{count}} channel is live.", "channelCount_other": "{{count}} channels are live."
   },
   "mode": { "aria": "Service mode" },
@@ -34,7 +34,7 @@
   "shorts": { "viewFull": "View full", "back": "Back home from Shorts" },
   "detail": {
     "title": "Content details", "fallbackTitle": "VR Content Preview", "unlockFailed": "Could not unlock this content.",
-    "play": "Play content", "previewEnded": "Preview ended · Unlock to continue", "defaultDescription": "Explore a new world with immersive spatial audio and high-resolution 360° video. Supports both VR headsets and mobile mode.",
+    "play": "Play content", "preview": "Preview", "previewEnded": "Preview ended · Unlock to continue", "defaultDescription": "Explore a new world with immersive spatial audio and high-resolution 360° video. Supports both VR headsets and mobile mode.",
     "unlock": "Unlock this content", "watchPoints": "Watch with points", "checkingAd": "Checking ad...", "watchAd": "Watch an ad to continue",
     "paying": "Processing payment...", "cash": "Pay with cash", "topup": "Add points", "unlocked": "Unlocked. Press play to start watching.",
     "recommended": "You may also like"
@@ -49,20 +49,21 @@
     "logout": "Log out", "mockNotice": "Your real account information will appear when the backend is connected."
   },
   "creator": {
-    "search": "Search assets, projects, and creators", "newContent": "New content", "catalog": "Catalog", "projects": "My projects", "insights": "Insights", "settings": "Studio settings",
+    "search": "Search assets, projects, and creators", "newContent": "New content", "workspace": "Workspace", "catalog": "Catalog", "projects": "My projects", "insights": "Insights", "settings": "Studio settings",
     "proDescription": "Enable 8K rendering and spatial audio tools.", "headlineLine1": "Turn ideas into spaces", "headlineLine2": "clearer than reality.",
-    "description": "Explore proven VR projects and build your own interactive experiences.", "projectCatalog": "VR Project Catalog", "syncing": "Syncing...",
+    "description": "Explore proven VR projects and build your own interactive experiences.", "catalogEyebrow": "Immersive Creator Catalog", "explore": "Explore", "readyToRemix": "Ready to remix", "projectCatalog": "VR Project Catalog", "syncing": "Syncing...",
     "projectCount_one": "{{count}} project", "projectCount_other": "{{count}} projects"
   },
   "operator": {
     "controlOnline": "Control online", "title": "Operator Console", "description": "Control VR device status and deployments across every space.",
+    "fleetControl": "Fleet Control / Seoul", "syncPlay": "Sync Play", "deviceFleet": "Device Fleet", "wake": "Wake", "sleep": "Sleep", "reboot": "Reboot", "update": "Update",
     "accepted": "Command accepted successfully.", "failed": "Command processing failed.", "onlineDevices": "Online devices", "syncRate": "Content sync rate", "needsAttention": "Needs attention",
     "unitCount_one": "{{count}} unit", "unitCount_other": "{{count}} units", "lastSeen": "Last seen {{value}}", "restart": "Restart",
     "status": { "online": "Online", "offline": "Offline", "warning": "Warning" }, "noSync": "No sync history"
   },
   "api": { "unreachable": "Unable to connect to the server. Please try again shortly.", "failed": "Request failed. ({{status}})", "invalid": "The server response format is invalid." },
   "mock": {
-    "categories": { "all": "All", "subscribe": "Subscriptions", "travel": "Travel", "game": "Games", "music": "Music", "edu": "Education", "sports": "Sports" },
+    "categories": { "all": "All", "subscribe": "Subscriptions", "travel": "Travel", "culture": "Culture", "nature": "Nature", "game": "Games", "music": "Music", "edu": "Education", "sports": "Sports" },
     "live": {
       "oneTitle": "Santorini Sunset Live VR Tour", "oneChannel": "VR World Travel", "twoTitle": "K-POP VR Concert - Live Stage", "twoChannel": "VR Entertainment",
       "threeTitle": "Seoraksan Fall Foliage Live Hike", "threeChannel": "Guide_Chulsoo", "fourTitle": "Tokyo Shibuya Night Drone Tour", "fourChannel": "CityFlyer"

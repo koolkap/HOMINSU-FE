@@ -123,7 +123,12 @@ function normalizeDisplayData(path: string, value: unknown): unknown {
   if (path === 'catalog/categories' && Array.isArray(value)) {
     return value.map((raw): Category => {
       const item = asRecord(raw)
-      return { id: String(item.slug ?? item.id), label: String(item.name ?? item.label ?? '') }
+      const id = String(item.slug ?? item.id)
+      const translationKey = `mock.categories.${id}`
+      return {
+        id,
+        label: i18n.exists(translationKey) ? i18n.t(translationKey) : String(item.name ?? item.label ?? ''),
+      }
     })
   }
   if ((path === 'content' || path.startsWith('content/'))) {

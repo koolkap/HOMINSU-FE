@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { intlLocale } from '../i18n'
 
 export default function LiveCard({ item }: { item: LiveItem }) {
-  const { i18n } = useTranslation()
+  const { i18n, t } = useTranslation()
   const viewers = new Intl.NumberFormat(intlLocale(i18n.resolvedLanguage), { notation: 'compact', maximumFractionDigits: 1 }).format(item.viewers)
   return (
     <Link to={`/content/${item.id}`} className="group block w-[220px] shrink-0 text-left sm:w-[260px] md:w-full md:shrink">
@@ -21,7 +21,7 @@ export default function LiveCard({ item }: { item: LiveItem }) {
         />
         <div className="absolute left-2 top-2 flex items-center gap-1.5 rounded-md bg-signal px-2 py-1 text-[11px] font-bold text-white shadow-md">
           <span className="h-1.5 w-1.5 animate-pulseDot rounded-full bg-white" />
-          LIVE
+          {t('common.live').toUpperCase()}
         </div>
         <div className="absolute left-2 bottom-2 flex items-center gap-1 rounded-md bg-black/55 px-2 py-1 text-[11px] font-semibold text-white backdrop-blur-sm">
           <Users size={12} strokeWidth={2.5} />
