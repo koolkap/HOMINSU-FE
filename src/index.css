@@ -40,6 +40,11 @@ body {
   outline-offset: 2px;
 }
 
+.language-control:focus-visible {
+  border-color: rgba(255, 255, 255, 0.35);
+  outline: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

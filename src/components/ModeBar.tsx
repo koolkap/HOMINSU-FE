@@ -11,7 +11,7 @@ const modes = [
 export default function ModeBar() {
   const { t } = useTranslation()
   return (
-    <div className="scroll-row relative z-40 flex min-h-9 items-center justify-center overflow-x-auto border-b border-white/5 bg-black px-2 py-1.5 text-[10px] font-extrabold tracking-[0.16em] text-mist-500">
+    <div className="relative z-40 flex min-h-9 items-center justify-center border-b border-white/5 bg-black px-2 py-1.5 text-[10px] font-extrabold tracking-[0.16em] text-mist-500">
       <nav aria-label={t('mode.aria')} className="flex shrink-0 items-center gap-1">
         {modes.map((mode) => (
           <NavLink key={mode.to} to={mode.to} end={mode.to === '/'} className={({ isActive }) => `shrink-0 rounded-full px-2.5 py-1.5 transition-colors sm:px-3 ${isActive ? mode.active : 'hover:bg-white/10 hover:text-white'}`}>

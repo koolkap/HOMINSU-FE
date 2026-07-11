@@ -10,7 +10,7 @@ const STORAGE_KEY = 'homeinsu_locale'
 function getInitialLanguage(): AppLanguage {
   const saved = localStorage.getItem(STORAGE_KEY)
   if (saved === 'ko' || saved === 'en') return saved
-  return (navigator.languages?.[0] || navigator.language).toLowerCase().startsWith('en') ? 'en' : 'ko'
+  return 'ko'
 }
 
 export function appLanguage(language = i18n.resolvedLanguage || i18n.language): AppLanguage {
