@@ -74,6 +74,10 @@ export async function login(email: string, password: string) {
   return result
 }
 
+export async function getCurrentUser() {
+  return normalizeProfile(await request<Record<string, unknown>>('me'))
+}
+
 export function unlockContent(id: string, method: string) {
   return request<{ unlocked: boolean }>(`content/${encodeURIComponent(id)}/unlock`, {
     method: 'POST',

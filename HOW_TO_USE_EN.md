@@ -94,20 +94,22 @@ These are local seed accounts only. Never use these passwords in production.
 1. Open `/` and select **Login**, or open `/profile` and select the login action.
 2. Enter one of the development accounts.
 3. Submit the form.
-4. The frontend stores the returned JWT in browser `localStorage` under
-   `homeinsu_token`.
-5. Subsequent wallet, unlock, profile, and operator requests include the token.
+4. The frontend stores the returned JWT under `homeinsu_token` and the visible
+   account identity under `homeinsu_user` in browser `localStorage`.
+5. The Login button is replaced by the user's Gravatar and display name.
+6. Subsequent wallet, unlock, profile, and operator requests include the token.
 
 Use the operator account before opening `/pro/operator`. A member token can view
 the page's offline preview, but the backend rejects operator mutations with
 HTTP `403`.
 
-The current logout button is visual only. To clear a development login manually,
-open browser developer tools and remove `homeinsu_token` from Local Storage, or
-run this in the console:
+Select the avatar to open `/profile`. The **Log out** action clears the JWT and
+stored user identity, then returns to the homepage. To clear a development
+session manually, run this in the browser console:
 
 ```javascript
 localStorage.removeItem('homeinsu_token')
+localStorage.removeItem('homeinsu_user')
 location.reload()
 ```
 

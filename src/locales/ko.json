@@ -8,6 +8,7 @@
     "itemCount_one": "{{count}}개", "itemCount_other": "{{count}}개", "channelCount_one": "{{count}}개 채널이 방송 중입니다.", "channelCount_other": "{{count}}개 채널이 방송 중입니다."
   },
   "mode": { "aria": "서비스 모드" },
+  "auth": { "avatarAlt": "{{name}} 프로필 이미지", "signedInAs": "{{name}} 계정으로 로그인됨", "profile": "프로필 열기" },
   "topbar": { "brand": "홈인슈", "search": "가상현실 콘텐츠 검색", "tagline": "VR 콘텐츠 플랫폼" },
   "login": {
     "title": "로그인", "description": "이메일과 비밀번호를 입력해 VR 콘텐츠를 이어서 즐겨보세요.", "close": "로그인 창 닫기",

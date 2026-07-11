@@ -8,6 +8,7 @@
     "itemCount_one": "{{count}} item", "itemCount_other": "{{count}} items", "channelCount_one": "{{count}} channel is live.", "channelCount_other": "{{count}} channels are live."
   },
   "mode": { "aria": "Service mode" },
+  "auth": { "avatarAlt": "{{name}} profile avatar", "signedInAs": "Signed in as {{name}}", "profile": "Open profile" },
   "topbar": { "brand": "Homeinsu", "search": "Search VR content", "tagline": "VR content platform" },
   "login": {
     "title": "Log in", "description": "Enter your email and password to keep enjoying VR content.", "close": "Close login dialog",

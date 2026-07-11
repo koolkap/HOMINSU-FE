@@ -92,18 +92,21 @@ npm run dev -- --host 0.0.0.0
 1. `/`에서 **로그인**을 누르거나 `/profile`에서 로그인 메뉴를 누릅니다.
 2. 개발용 계정 정보를 입력합니다.
 3. 로그인 폼을 제출합니다.
-4. 발급된 JWT가 브라우저 Local Storage의 `homeinsu_token`에 저장됩니다.
-5. 이후 프로필, 지갑, 충전, 잠금 해제 및 운영자 요청에 토큰이 포함됩니다.
+4. 발급된 JWT는 `homeinsu_token`, 화면에 표시할 사용자 정보는
+   `homeinsu_user`라는 이름으로 브라우저 Local Storage에 저장됩니다.
+5. 로그인 버튼이 사용자의 Gravatar와 표시 이름으로 변경됩니다.
+6. 이후 프로필, 지갑, 충전, 잠금 해제 및 운영자 요청에 토큰이 포함됩니다.
 
 `/pro/operator`를 사용하기 전에는 운영자 계정으로 로그인해야 합니다.
 일반 회원 토큰으로 운영 명령을 보내면 백엔드에서 HTTP `403`을 반환합니다.
 
-현재 로그아웃 버튼은 화면만 구현되어 있습니다. 개발 중 토큰을 삭제하려면
-브라우저 개발자 도구의 Local Storage에서 `homeinsu_token`을 삭제하거나
-콘솔에서 다음 코드를 실행합니다.
+아바타를 누르면 `/profile`로 이동합니다. **로그아웃**을 누르면 JWT와 저장된
+사용자 정보를 삭제한 뒤 홈으로 이동합니다. 개발 중 세션을 직접 삭제하려면
+브라우저 콘솔에서 다음 코드를 실행합니다.
 
 ```javascript
 localStorage.removeItem('homeinsu_token')
+localStorage.removeItem('homeinsu_user')
 location.reload()
 ```
 

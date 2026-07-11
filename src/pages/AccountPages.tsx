@@ -1,12 +1,14 @@
 import { useMemo, useState } from 'react'
 import { ChevronLeft, Clock3, CreditCard, LogOut, Settings, ShieldCheck, User, WalletCards } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import BottomNav from '../components/BottomNav'
 import { getMockProfile, getMockWallet, pointPackages } from '../data/mockData'
 import { useDisplayData } from '../hooks/useDisplayData'
 import { createTopup } from '../lib/api'
 import { appLanguage, intlLocale } from '../i18n'
+import { useAuth } from '../auth/useAuth'
+import UserAvatar from '../components/UserAvatar'
 
 function Header({ title }: { title: string }) {
   const { t } = useTranslation()
@@ -43,13 +45,24 @@ export function PointsPage() {
 
 export function ProfilePage({ onLogin }: { onLogin: () => void }) {
   const { i18n, t } = useTranslation()
+  const { user, signOut } = useAuth()
+  const navigate = useNavigate()
   const language = appLanguage(i18n.resolvedLanguage)
   const mockProfile = useMemo(() => getMockProfile(language), [language])
   const { data: profile, isMock } = useDisplayData('me', mockProfile)
+  const displayProfile = user || profile
+  const switchAccount = () => {
+    if (user) signOut()
+    onLogin()
+  }
+  const logout = () => {
+    signOut()
+    navigate('/')
+  }
   return <div className="min-h-screen bg-ink-950 pb-24 text-mist-100"><Header title="MY" /><main className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
-    <section className="flex items-center gap-5 rounded-[2rem] border border-white/10 bg-gradient-to-br from-ink-850 to-ink-900 p-6"><div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-signal to-pulse">{profile.avatarUrl ? <img src={profile.avatarUrl} alt="" className="h-full w-full object-cover" /> : <User size={34} />}</div><div><span className="text-[10px] font-black tracking-[0.2em] text-signal">{t(`common.role.${profile.role || 'member'}`, { defaultValue: profile.role || 'MEMBER' })}</span><h2 className="mt-1 text-2xl font-extrabold text-white">{profile.name}</h2><p className="text-sm text-mist-500">{profile.email}</p></div></section>
+    <section className="flex items-center gap-5 rounded-[2rem] border border-white/10 bg-gradient-to-br from-ink-850 to-ink-900 p-6"><UserAvatar user={displayProfile} className="h-20 w-20" size={160} /><div><span className="text-[10px] font-black tracking-[0.2em] text-signal">{t(`common.role.${displayProfile.role || 'member'}`, { defaultValue: displayProfile.role || 'MEMBER' })}</span><h2 className="mt-1 text-2xl font-extrabold text-white">{displayProfile.name}</h2><p className="text-sm text-mist-500">{displayProfile.email}</p></div></section>
     <div className="mt-6 grid grid-cols-3 gap-2 text-center"><Link to="/points" className="rounded-2xl bg-ink-900 p-4"><WalletCards className="mx-auto text-signal" /><p className="mt-2 text-xs font-bold">{t('profile.points')}</p></Link><button className="rounded-2xl bg-ink-900 p-4"><CreditCard className="mx-auto text-pulse-soft" /><p className="mt-2 text-xs font-bold">{t('profile.payments')}</p></button><button className="rounded-2xl bg-ink-900 p-4"><ShieldCheck className="mx-auto text-emerald-400" /><p className="mt-2 text-xs font-bold">{t('profile.verification')}</p></button></div>
-    <div className="mt-6 divide-y divide-white/5 rounded-2xl border border-white/5 bg-ink-900"><button className="flex w-full items-center gap-3 p-5 text-sm font-bold"><Settings size={18} className="text-mist-500" /> {t('profile.settings')} <span className="ml-auto text-mist-700">›</span></button><button onClick={onLogin} className="flex w-full items-center gap-3 p-5 text-sm font-bold"><User size={18} className="text-mist-500" /> {t('profile.switchAccount')} <span className="ml-auto text-mist-700">›</span></button><button className="flex w-full items-center gap-3 p-5 text-sm font-bold text-red-300"><LogOut size={18} /> {t('profile.logout')}</button></div>
-    {isMock && <p className="mt-4 text-center text-xs text-mist-700">{t('profile.mockNotice')}</p>}
+    <div className="mt-6 divide-y divide-white/5 rounded-2xl border border-white/5 bg-ink-900"><button className="flex w-full items-center gap-3 p-5 text-sm font-bold"><Settings size={18} className="text-mist-500" /> {t('profile.settings')} <span className="ml-auto text-mist-700">›</span></button><button onClick={switchAccount} className="flex w-full items-center gap-3 p-5 text-sm font-bold"><User size={18} className="text-mist-500" /> {t('profile.switchAccount')} <span className="ml-auto text-mist-700">›</span></button>{user && <button onClick={logout} className="flex w-full items-center gap-3 p-5 text-sm font-bold text-red-300"><LogOut size={18} /> {t('profile.logout')}</button>}</div>
+    {!user && isMock && <p className="mt-4 text-center text-xs text-mist-700">{t('profile.mockNotice')}</p>}
   </main><BottomNav /></div>
 }

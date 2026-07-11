@@ -2,6 +2,7 @@ import { type FormEvent, useEffect, useState } from 'react'
 import { LockKeyhole, Mail, X } from 'lucide-react'
 import { login } from '../lib/api'
 import { useTranslation } from 'react-i18next'
+import { useAuth } from '../auth/useAuth'
 
 type LoginModalProps = {
   open: boolean
@@ -11,6 +12,7 @@ type LoginModalProps = {
 
 export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps) {
   const { t } = useTranslation()
+  const { signIn } = useAuth()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   useEffect(() => {
@@ -45,7 +47,9 @@ export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps
     setError('')
     const form = new FormData(event.currentTarget)
     try {
-      await login(String(form.get('email')), String(form.get('password')))
+      const result = await login(String(form.get('email')), String(form.get('password')))
+      if (!result.user) throw new Error(t('login.failed'))
+      signIn(result.user)
       onSuccess()
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : t('login.failed'))

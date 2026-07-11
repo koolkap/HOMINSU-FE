@@ -10,6 +10,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "blueimp-md5": "^2.19.0",
     "framer-motion": "^11.11.17",
     "i18next": "^26.3.6",
     "lucide-react": "^0.462.0",
@@ -20,6 +21,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
+    "@types/blueimp-md5": "^2.18.2",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@typescript-eslint/eslint-plugin": "^8.15.0",
