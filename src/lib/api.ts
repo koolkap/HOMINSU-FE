@@ -5,6 +5,17 @@ const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'https://hominsu-be-p
 
 type Envelope<T> = { data: T }
 
+export const MAX_UPLOAD_BYTES = 50 * 1024 * 1024
+
+export type StorageUpload = {
+  bucket: string
+  path: string
+  url: string
+  original_name: string
+  content_type: string
+  size: number
+}
+
 export class ApiError extends Error {
   status: number
 
@@ -106,6 +117,44 @@ export function syncDevices(deviceIds: string[]) {
   return request<{ synced: number }>('operator/sync', {
     method: 'POST',
     body: JSON.stringify({ device_ids: deviceIds.map(Number), payload: { source: 'operator_console' } }),
+  })
+}
+
+export function uploadStorageFile(file: File, onProgress: (percentage: number) => void): Promise<StorageUpload> {
+  if (file.size > MAX_UPLOAD_BYTES) {
+    return Promise.reject(new ApiError(i18n.t('creator.tooLarge'), 413))
+  }
+
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest()
+    const token = localStorage.getItem('homeinsu_token')
+    const form = new FormData()
+    form.append('file', file)
+
+    xhr.open('POST', `${API_BASE_URL}/storage/upload`)
+    if (token) xhr.setRequestHeader('Authorization', `Bearer ${token}`)
+    xhr.responseType = 'json'
+
+    xhr.upload.addEventListener('progress', (event) => {
+      if (event.lengthComputable) onProgress(Math.round((event.loaded / event.total) * 100))
+    })
+    xhr.addEventListener('error', () => reject(new ApiError(i18n.t('api.unreachable'))))
+    xhr.addEventListener('load', () => {
+      const payload = xhr.response as Envelope<StorageUpload> | { message?: string; error?: string | { message?: string } } | null
+      if (xhr.status < 200 || xhr.status >= 300) {
+        const details = payload as { message?: string; error?: string | { message?: string } } | null
+        const errorMessage = typeof details?.error === 'string' ? details.error : details?.error?.message
+        reject(new ApiError(details?.message || errorMessage || i18n.t('api.failed', { status: xhr.status }), xhr.status))
+        return
+      }
+      if (!payload || !('data' in payload)) {
+        reject(new ApiError(i18n.t('api.invalid'), xhr.status))
+        return
+      }
+      onProgress(100)
+      resolve(payload.data)
+    })
+    xhr.send(form)
   })
 }
 

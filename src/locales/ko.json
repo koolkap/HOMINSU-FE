@@ -53,7 +53,8 @@
     "search": "에셋, 프로젝트, 크리에이터 검색", "newContent": "새 콘텐츠", "workspace": "작업 공간", "catalog": "카탈로그", "projects": "내 프로젝트", "insights": "인사이트", "settings": "스튜디오 설정",
     "proDescription": "8K 렌더링과 공간 음향 도구를 활성화하세요.", "headlineLine1": "아이디어를 현실보다", "headlineLine2": "더 선명한 공간으로.",
     "description": "검증된 VR 프로젝트를 탐색하고, 나만의 인터랙티브 경험을 제작해 보세요.", "catalogEyebrow": "몰입형 크리에이터 카탈로그", "explore": "둘러보기", "readyToRemix": "리믹스 가능", "projectCatalog": "VR 프로젝트 카탈로그", "syncing": "동기화 중...",
-    "projectCount_one": "{{count}}개 프로젝트", "projectCount_other": "{{count}}개 프로젝트"
+    "projectCount_one": "{{count}}개 프로젝트", "projectCount_other": "{{count}}개 프로젝트",
+    "uploadFile": "미디어 선택", "maxSize": "JPEG, PNG, WebP, MP4, WebM, MOV · 최대 50MB", "selected": "선택한 파일", "uploadNow": "스토리지에 업로드", "uploading": "업로드 중 {{progress}}%", "success": "업로드 완료", "failed": "미디어 업로드에 실패했습니다.", "tooLarge": "선택한 파일이 50MB 제한을 초과했습니다.", "permission": "미디어를 업로드하려면 운영자 또는 관리자 계정으로 로그인하세요.", "openFile": "업로드한 미디어 열기", "chooseAnother": "다른 파일 선택"
   },
   "operator": {
     "controlOnline": "제어 시스템 온라인", "title": "오퍼레이터 콘솔", "description": "공간별 VR 디바이스 상태와 배포를 제어합니다.",

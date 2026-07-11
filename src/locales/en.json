@@ -53,7 +53,8 @@
     "search": "Search assets, projects, and creators", "newContent": "New content", "workspace": "Workspace", "catalog": "Catalog", "projects": "My projects", "insights": "Insights", "settings": "Studio settings",
     "proDescription": "Enable 8K rendering and spatial audio tools.", "headlineLine1": "Turn ideas into spaces", "headlineLine2": "clearer than reality.",
     "description": "Explore proven VR projects and build your own interactive experiences.", "catalogEyebrow": "Immersive Creator Catalog", "explore": "Explore", "readyToRemix": "Ready to remix", "projectCatalog": "VR Project Catalog", "syncing": "Syncing...",
-    "projectCount_one": "{{count}} project", "projectCount_other": "{{count}} projects"
+    "projectCount_one": "{{count}} project", "projectCount_other": "{{count}} projects",
+    "uploadFile": "Choose media", "maxSize": "JPEG, PNG, WebP, MP4, WebM, or MOV · 50 MB maximum", "selected": "Selected file", "uploadNow": "Upload to storage", "uploading": "Uploading {{progress}}%", "success": "Upload complete", "failed": "The media upload failed.", "tooLarge": "The selected file exceeds the 50 MB limit.", "permission": "Log in as an operator or administrator to upload media.", "openFile": "Open uploaded media", "chooseAnother": "Choose another file"
   },
   "operator": {
     "controlOnline": "Control online", "title": "Operator Console", "description": "Control VR device status and deployments across every space.",
