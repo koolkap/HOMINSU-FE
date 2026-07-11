@@ -20,7 +20,7 @@ The mode bar at the top provides direct navigation among these experiences.
 
 - Node.js 20 or newer
 - npm 10 or newer
-- HOMINSU backend running at `http://localhost:5000`
+- Access to the HOMINSU backend at `https://hominsu-be-production.up.railway.app`
 - A current Chrome, Edge, Firefox, or Safari browser
 
 Verify Node.js and npm:
@@ -43,7 +43,7 @@ cp .env.example .env.local 2>/dev/null || true
 If `.env.example` is not present, create `.env.local` with:
 
 ```text
-VITE_API_BASE_URL=http://localhost:5000/api/v1
+VITE_API_BASE_URL=https://hominsu-be-production.up.railway.app/api/v1
 ```
 
 ### Windows PowerShell
@@ -51,7 +51,7 @@ VITE_API_BASE_URL=http://localhost:5000/api/v1
 ```powershell
 Set-Location C:\path\to\HOMINSU-FE
 npm install
-Set-Content -Path .env.local -Value "VITE_API_BASE_URL=http://localhost:5000/api/v1"
+Set-Content -Path .env.local -Value "VITE_API_BASE_URL=https://hominsu-be-production.up.railway.app/api/v1"
 ```
 
 `VITE_API_BASE_URL` must include `/api/v1` and must not point to the Swagger
@@ -74,11 +74,10 @@ npm run dev -- --host 0.0.0.0
 
 Recommended startup order:
 
-1. Start PostgreSQL.
-2. Start the backend with Uvicorn on port `5000`.
-3. Confirm `http://localhost:5000/health` returns `status: ok`.
-4. Start this frontend on port `5173`.
-5. Open `http://localhost:5173`.
+1. Confirm `https://hominsu-be-production.up.railway.app/health` returns `status: ok`.
+2. Create `.env.local` from `.env.example` if an explicit API override is needed.
+3. Start this frontend on port `5173`.
+4. Open `http://localhost:5173`.
 
 ## 5. Development accounts
 
@@ -207,10 +206,10 @@ Use these URLs while diagnosing frontend calls:
 
 | URL | Purpose |
 | --- | --- |
-| `http://localhost:5000/` | Backend service information |
-| `http://localhost:5000/health` | Health check |
-| `http://localhost:5000/docs/` | Interactive Swagger API testing |
-| `http://localhost:5000/openapi.json` | Raw OpenAPI document |
+| `https://hominsu-be-production.up.railway.app/` | Backend service information |
+| `https://hominsu-be-production.up.railway.app/health` | Health check |
+| `https://hominsu-be-production.up.railway.app/docs/` | Interactive Swagger API testing |
+| `https://hominsu-be-production.up.railway.app/openapi.json` | Raw OpenAPI document |
 
 Swagger can log in and test protected endpoints independently of the frontend.
 
@@ -229,8 +228,8 @@ The deployable output is written to `dist/`. Configure the web server to return
 
 | Symptom | Action |
 | --- | --- |
-| Display says offline preview | Start the backend and verify `VITE_API_BASE_URL` |
-| Login fails to connect | Check Uvicorn on port 5000 and browser network errors |
+| Display says offline preview | Check Railway health and verify `VITE_API_BASE_URL` |
+| Login fails to connect | Check the Railway deployment and browser network errors |
 | `401` response | Sign in again; the JWT may be missing or expired |
 | `403` on operator action | Sign in with the operator or admin account |
 | `404` API response | Ensure the URL includes `/api/v1` and uses a documented path |

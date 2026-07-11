@@ -1,7 +1,7 @@
 import type { Category, ContentItem, Device, LiveItem, LoginResult, PointPackage, UserProfile, Wallet } from '../types'
 import i18n, { intlLocale } from '../i18n'
 
-const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api/v1').replace(/\/$/, '')
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'https://hominsu-be-production.up.railway.app/api/v1').replace(/\/$/, '')
 
 type Envelope<T> = { data: T }
 

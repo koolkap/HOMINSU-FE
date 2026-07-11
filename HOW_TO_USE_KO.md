@@ -19,7 +19,7 @@
 
 - Node.js 20 이상
 - npm 10 이상
-- `http://localhost:5000`에서 실행 중인 HOMINSU 백엔드
+- `https://hominsu-be-production.up.railway.app`의 HOMINSU 백엔드 접속 권한
 - 최신 Chrome, Edge, Firefox 또는 Safari
 
 버전을 확인합니다.
@@ -41,7 +41,7 @@ npm install
 프로젝트 루트에 `.env.local` 파일을 만들고 다음 값을 입력합니다.
 
 ```text
-VITE_API_BASE_URL=http://localhost:5000/api/v1
+VITE_API_BASE_URL=https://hominsu-be-production.up.railway.app/api/v1
 ```
 
 ### Windows PowerShell
@@ -49,7 +49,7 @@ VITE_API_BASE_URL=http://localhost:5000/api/v1
 ```powershell
 Set-Location C:\path\to\HOMINSU-FE
 npm install
-Set-Content -Path .env.local -Value "VITE_API_BASE_URL=http://localhost:5000/api/v1"
+Set-Content -Path .env.local -Value "VITE_API_BASE_URL=https://hominsu-be-production.up.railway.app/api/v1"
 ```
 
 `VITE_API_BASE_URL`에는 `/api/v1`까지 포함해야 합니다. Swagger 주소를
@@ -72,11 +72,10 @@ npm run dev -- --host 0.0.0.0
 
 권장 실행 순서:
 
-1. PostgreSQL을 실행합니다.
-2. 백엔드를 Uvicorn으로 5000번 포트에서 실행합니다.
-3. `http://localhost:5000/health`에서 `status: ok`를 확인합니다.
-4. 프런트엔드를 5173번 포트에서 실행합니다.
-5. `http://localhost:5173`에 접속합니다.
+1. `https://hominsu-be-production.up.railway.app/health`에서 `status: ok`를 확인합니다.
+2. API 주소를 별도로 지정해야 할 때는 `.env.example`을 `.env.local`로 복사합니다.
+3. 프런트엔드를 5173번 포트에서 실행합니다.
+4. `http://localhost:5173`에 접속합니다.
 
 ## 5. 개발용 계정
 
@@ -200,10 +199,10 @@ PG 결제를 호출하지 않는 백엔드 트랜잭션 데모입니다.
 
 | 주소 | 용도 |
 | --- | --- |
-| `http://localhost:5000/` | 백엔드 서비스 정보 |
-| `http://localhost:5000/health` | 상태 확인 |
-| `http://localhost:5000/docs/` | Swagger API 직접 테스트 |
-| `http://localhost:5000/openapi.json` | OpenAPI 원본 문서 |
+| `https://hominsu-be-production.up.railway.app/` | 백엔드 서비스 정보 |
+| `https://hominsu-be-production.up.railway.app/health` | 상태 확인 |
+| `https://hominsu-be-production.up.railway.app/docs/` | Swagger API 직접 테스트 |
+| `https://hominsu-be-production.up.railway.app/openapi.json` | OpenAPI 원본 문서 |
 
 Swagger를 사용하면 프런트엔드와 별도로 로그인 및 보호 API를 검사할 수 있습니다.
 
@@ -222,8 +221,8 @@ npm run preview
 
 | 증상 | 해결 방법 |
 | --- | --- |
-| 오프라인 미리보기가 표시됨 | 백엔드를 실행하고 `VITE_API_BASE_URL`을 확인합니다. |
-| 로그인 서버 연결 실패 | 5000번 포트의 Uvicorn과 브라우저 Network 탭을 확인합니다. |
+| 오프라인 미리보기가 표시됨 | Railway 상태와 `VITE_API_BASE_URL`을 확인합니다. |
+| 로그인 서버 연결 실패 | Railway 배포 상태와 브라우저 Network 탭을 확인합니다. |
 | `401` 응답 | 토큰이 없거나 만료되었으므로 다시 로그인합니다. |
 | 운영 명령에서 `403` | 운영자 또는 관리자 계정으로 로그인합니다. |
 | API `404` | 주소에 `/api/v1`이 있고 문서화된 경로인지 확인합니다. |
