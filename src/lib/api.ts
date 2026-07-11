@@ -8,13 +8,23 @@ type Envelope<T> = { data: T }
 export const MAX_UPLOAD_BYTES = 50 * 1024 * 1024
 
 export type StorageUpload = {
+  id: number
   bucket: string
   path: string
   url: string
   original_name: string
+  title: string
   content_type: string
   size: number
+  size_bytes: number
+  media_kind: 'image' | 'video'
+  provider: 's3' | 'supabase'
+  is_showcase_ready: boolean
+  storage_state: 'ready' | 'cleanup_required'
+  created_at: string
 }
+
+export type ShowcaseMedia = Pick<StorageUpload, 'id' | 'title' | 'url' | 'content_type' | 'size_bytes' | 'created_at'>
 
 export class ApiError extends Error {
   status: number
@@ -42,6 +52,8 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   } catch {
     throw new ApiError(i18n.t('api.unreachable'))
   }
+
+  if (response.status === 204) return undefined as T
 
   let payload: Envelope<T> | { message?: string; error?: string | { message?: string } } | undefined
   try {
@@ -156,6 +168,18 @@ export function uploadStorageFile(file: File, onProgress: (percentage: number) =
     })
     xhr.send(form)
   })
+}
+
+export function listOperatorMedia() {
+  return request<StorageUpload[]>('operator/media')
+}
+
+export function deleteOperatorMedia(id: number) {
+  return request<void>(`operator/media/${id}`, { method: 'DELETE' })
+}
+
+export function listShowcaseMedia() {
+  return request<ShowcaseMedia[]>('showcase/media')
 }
 
 function asRecord(value: unknown): Record<string, unknown> {

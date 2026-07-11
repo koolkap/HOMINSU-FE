@@ -54,8 +54,10 @@
     "proDescription": "8K 렌더링과 공간 음향 도구를 활성화하세요.", "headlineLine1": "아이디어를 현실보다", "headlineLine2": "더 선명한 공간으로.",
     "description": "검증된 VR 프로젝트를 탐색하고, 나만의 인터랙티브 경험을 제작해 보세요.", "catalogEyebrow": "몰입형 크리에이터 카탈로그", "explore": "둘러보기", "readyToRemix": "리믹스 가능", "projectCatalog": "VR 프로젝트 카탈로그", "syncing": "동기화 중...",
     "projectCount_one": "{{count}}개 프로젝트", "projectCount_other": "{{count}}개 프로젝트",
-    "uploadFile": "미디어 선택", "maxSize": "JPEG, PNG, WebP, MP4, WebM, MOV · 최대 50MB", "selected": "선택한 파일", "uploadNow": "스토리지에 업로드", "uploading": "업로드 중 {{progress}}%", "success": "업로드 완료", "failed": "미디어 업로드에 실패했습니다.", "tooLarge": "선택한 파일이 50MB 제한을 초과했습니다.", "permission": "미디어를 업로드하려면 운영자 또는 관리자 계정으로 로그인하세요.", "openFile": "업로드한 미디어 열기", "chooseAnother": "다른 파일 선택"
+    "uploadFile": "미디어 선택", "maxSize": "JPEG, PNG, WebP, MP4, WebM, MOV · 최대 50MB", "selected": "선택한 파일", "uploadNow": "스토리지에 업로드", "uploading": "업로드 중 {{progress}}%", "success": "업로드 완료", "failed": "미디어 업로드에 실패했습니다.", "tooLarge": "선택한 파일이 50MB 제한을 초과했습니다.", "permission": "미디어를 업로드하려면 운영자 또는 관리자 계정으로 로그인하세요.", "openFile": "업로드한 미디어 열기", "chooseAnother": "다른 파일 선택",
+    "myLibrary": "내 콘텐츠", "uploadedMedia": "업로드 미디어 라이브러리", "uploadCount_one": "{{count}}개 에셋", "uploadCount_other": "{{count}}개 에셋", "libraryLoading": "미디어 라이브러리를 불러오는 중...", "libraryEmpty": "업로드한 미디어가 여기에 표시됩니다.", "libraryFailed": "미디어 라이브러리를 불러오지 못했습니다.", "retry": "다시 시도", "onMemberHome": "멤버 홈 공개", "openMedia": "열기", "delete": "미디어 삭제", "confirmDelete": "삭제 확인", "cancelDelete": "취소", "deleting": "삭제 중...", "deleteFailed": "미디어를 삭제하지 못했습니다.", "image": "이미지", "video": "영상"
   },
+  "showcase": { "eyebrow": "VR 스튜디오 신작", "title": "홈인슈 커뮤니티가 만든 공간", "description": "스튜디오 운영자가 직접 업로드한 새로운 몰입형 영상을 만나보세요.", "creatorUpload": "크리에이터 프리미어" },
   "operator": {
     "controlOnline": "제어 시스템 온라인", "title": "오퍼레이터 콘솔", "description": "공간별 VR 디바이스 상태와 배포를 제어합니다.",
     "fleetControl": "장비 제어 / 서울", "syncPlay": "재생 동기화", "deviceFleet": "디바이스 장비", "wake": "켜기", "sleep": "절전", "reboot": "재부팅", "update": "업데이트",

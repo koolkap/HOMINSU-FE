@@ -1,13 +1,14 @@
 import { BarChart3, Boxes, CheckCircle2, ChevronRight, CloudUpload, ExternalLink, FileVideo, Film, LayoutGrid, LoaderCircle, Search, Settings2, Sparkles } from 'lucide-react'
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../auth/useAuth'
 import ImageWithSkeleton from '../components/ImageWithSkeleton'
+import UploadedMediaLibrary from '../components/UploadedMediaLibrary'
 import { getMockCategories, getMockContentItems } from '../data/mockData'
 import { useDisplayData } from '../hooks/useDisplayData'
 import { appLanguage } from '../i18n'
-import { MAX_UPLOAD_BYTES, uploadStorageFile, type StorageUpload } from '../lib/api'
+import { deleteOperatorMedia, listOperatorMedia, MAX_UPLOAD_BYTES, uploadStorageFile, type StorageUpload } from '../lib/api'
 
 const ACCEPTED_MEDIA = 'image/jpeg,image/png,image/webp,video/mp4,video/webm,video/quicktime'
 
@@ -29,8 +30,25 @@ export default function CreatorPage() {
   const [progress, setProgress] = useState(0)
   const [error, setError] = useState('')
   const [upload, setUpload] = useState<StorageUpload | null>(null)
+  const [library, setLibrary] = useState<StorageUpload[]>([])
+  const [libraryLoading, setLibraryLoading] = useState(false)
+  const [libraryError, setLibraryError] = useState('')
+  const [libraryVersion, setLibraryVersion] = useState(0)
+  const [deletingId, setDeletingId] = useState<number | null>(null)
 
   const canUpload = user?.role === 'operator' || user?.role === 'admin'
+
+  useEffect(() => {
+    if (!canUpload) return
+    let active = true
+    setLibraryLoading(true)
+    setLibraryError('')
+    void listOperatorMedia()
+      .then((items) => { if (active) setLibrary(items) })
+      .catch((reason: unknown) => { if (active) setLibraryError(reason instanceof Error ? reason.message : t('creator.libraryFailed')) })
+      .finally(() => { if (active) setLibraryLoading(false) })
+    return () => { active = false }
+  }, [canUpload, libraryVersion, t])
 
   const openFilePicker = () => {
     if (!canUpload) {
@@ -60,12 +78,28 @@ export default function CreatorPage() {
     setUpload(null)
     setProgress(0)
     try {
-      setUpload(await uploadStorageFile(selectedFile, setProgress))
+      const result = await uploadStorageFile(selectedFile, setProgress)
+      setUpload(result)
+      setLibrary((items) => [result, ...items.filter((item) => item.id !== result.id)])
       setSelectedFile(null)
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : t('creator.failed'))
     } finally {
       setUploading(false)
+    }
+  }
+
+  const deleteUpload = async (id: number) => {
+    setDeletingId(id)
+    setLibraryError('')
+    try {
+      await deleteOperatorMedia(id)
+      setLibrary((items) => items.filter((item) => item.id !== id))
+      if (upload?.id === id) setUpload(null)
+    } catch (reason) {
+      setLibraryError(reason instanceof Error ? reason.message : t('creator.deleteFailed'))
+    } finally {
+      setDeletingId(null)
     }
   }
 
@@ -105,6 +139,7 @@ export default function CreatorPage() {
           {error && <p className="mt-4 rounded-xl border border-red-400/20 bg-red-500/10 px-4 py-3 text-sm font-bold text-red-200" role="alert">{error}</p>}
           {(upload || error) && !uploading && <button type="button" onClick={openFilePicker} className="mt-4 text-xs font-bold text-blue-300 underline decoration-blue-400/30 underline-offset-4 hover:text-cyan-300">{t('creator.chooseAnother')}</button>}
         </section>}
+        {canUpload && <UploadedMediaLibrary items={library} loading={libraryLoading} error={libraryError} deletingId={deletingId} onRetry={() => setLibraryVersion((version) => version + 1)} onDelete={deleteUpload} />}
         <section className="relative overflow-hidden rounded-[2rem] border border-blue-300/10 bg-gradient-to-br from-blue-600/25 via-blue-950/20 to-cyan-400/5 p-7 sm:p-10"><div className="absolute -right-20 -top-24 h-64 w-64 rounded-full bg-blue-400/20 blur-3xl" /><p className="text-xs font-black tracking-[0.2em] text-cyan-300">{t('creator.catalogEyebrow').toUpperCase()}</p><h1 className="relative mt-3 max-w-2xl text-3xl font-black leading-tight sm:text-5xl">{t('creator.headlineLine1')}<br />{t('creator.headlineLine2')}</h1><p className="relative mt-4 max-w-lg text-sm leading-6 text-blue-100/60">{t('creator.description')}</p><button type="button" onClick={openFilePicker} className="relative mt-6 rounded-full border border-cyan-300/30 bg-cyan-300/10 px-5 py-3 text-xs font-black text-cyan-200 transition hover:bg-cyan-300/20"><CloudUpload className="mr-2 inline" size={16} />{t('creator.uploadFile')}</button><p className="relative mt-3 text-[11px] text-blue-200/40">{t('creator.maxSize')}</p></section>
         <div className="scroll-row mt-6 flex gap-2 overflow-x-auto">{catalogCategories.map((category, index) => <button key={category.id} className={`shrink-0 rounded-full px-4 py-2 text-xs font-bold ${index === 0 ? 'bg-blue-500 text-white' : 'border border-blue-300/10 bg-blue-950/50 text-blue-100/60'}`}>{category.label}</button>)}</div>
         <div className="mb-4 mt-9 flex items-end justify-between"><div><p className="text-[10px] font-bold tracking-[0.18em] text-blue-400">{t('creator.explore').toUpperCase()}</p><h2 className="mt-1 text-xl font-black">{t('creator.projectCatalog')}</h2></div><span className="text-xs text-blue-200/40">{loading ? t('creator.syncing') : t('creator.projectCount', { count: catalog.length })}{isMock && ` · ${t('common.offlinePreview')}`}</span></div>

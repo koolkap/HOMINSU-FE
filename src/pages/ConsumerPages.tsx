@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { ChevronLeft, Eye, LockKeyhole, Play, Radio, Sparkles, Volume2 } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -11,10 +11,11 @@ import ImageWithSkeleton from '../components/ImageWithSkeleton'
 import LiveCard from '../components/LiveCard'
 import LiveSection from '../components/LiveSection'
 import PromoBanner from '../components/PromoBanner'
+import PublicVideoSection from '../components/PublicVideoSection'
 import TopBar from '../components/TopBar'
 import { getMockCategories, getMockContentItems, getMockLiveItems } from '../data/mockData'
 import { useDisplayData } from '../hooks/useDisplayData'
-import { unlockContent } from '../lib/api'
+import { listShowcaseMedia, unlockContent, type ShowcaseMedia } from '../lib/api'
 import type { ContentItem } from '../types'
 import { appLanguage, intlLocale } from '../i18n'
 
@@ -28,6 +29,13 @@ export function HomePage({ onLogin }: { onLogin: () => void }) {
   const { data: categories } = useDisplayData('catalog/categories', mockCategories)
   const { data: content } = useDisplayData('content', contentItems)
   const { data: live } = useDisplayData('live', liveItems)
+  const [showcase, setShowcase] = useState<ShowcaseMedia[]>([])
+
+  useEffect(() => {
+    let active = true
+    void listShowcaseMedia().then((items) => { if (active) setShowcase(items) }).catch(() => undefined)
+    return () => { active = false }
+  }, [])
 
   return <div className="min-h-screen bg-ink-950 text-mist-100">
     <TopBar onLoginClick={onLogin} />
@@ -35,6 +43,7 @@ export function HomePage({ onLogin }: { onLogin: () => void }) {
       <Hero />
       <PromoBanner />
       <CategoryTabs active={activeCategory} onChange={setActiveCategory} categories={categories} />
+      <PublicVideoSection items={showcase} />
       <LiveSection items={live} />
       <ContentGrid items={content} />
     </main>
