@@ -1,28 +1,11 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 
-const slides = [
-  {
-    id: 'promo-1',
-    tag: '이벤트',
-    title: '신규 가입 이벤트',
-    body: '500P 즉시 지급!',
-  },
-  {
-    id: 'promo-2',
-    tag: '신규',
-    title: '네오 서울 2088 라이브',
-    body: '8K VR 야간 비행 투어, 지금 시청하기',
-  },
-  {
-    id: 'promo-3',
-    tag: '혜택',
-    title: '주간 미션 완료 보상',
-    body: '포인트 2배 적립 찬스',
-  },
-]
+const slides = ['one', 'two', 'three'] as const
 
 export default function PromoBanner() {
+  const { t } = useTranslation()
   const [index, setIndex] = useState(0)
 
   useEffect(() => {
@@ -42,7 +25,7 @@ export default function PromoBanner() {
           />
           <AnimatePresence mode="wait">
             <motion.div
-              key={slide.id}
+              key={slide}
               initial={{ opacity: 0, x: 16 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -16 }}
@@ -50,20 +33,20 @@ export default function PromoBanner() {
               className="relative flex h-full flex-col justify-center gap-2 px-5 sm:px-8"
             >
               <span className="w-fit rounded-full bg-black/25 px-2.5 py-1 text-[11px] font-semibold text-white/90">
-                {slide.tag}
+                {t(`promo.slides.${slide}.tag`)}
               </span>
               <h2 className="font-display text-xl font-bold text-white sm:text-2xl">
-                {slide.title}
+                {t(`promo.slides.${slide}.title`)}
               </h2>
-              <p className="text-sm text-white/85 sm:text-base">{slide.body}</p>
+              <p className="text-sm text-white/85 sm:text-base">{t(`promo.slides.${slide}.body`)}</p>
             </motion.div>
           </AnimatePresence>
 
           <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-1.5">
             {slides.map((s, i) => (
               <button
-                key={s.id}
-                aria-label={`${i + 1}번 배너로 이동`}
+                key={s}
+                aria-label={t('promo.goTo', { number: i + 1 })}
                 onClick={() => setIndex(i)}
                 className={`h-1.5 rounded-full transition-all duration-300 ${
                   i === index ? 'w-5 bg-white' : 'w-1.5 bg-white/40'

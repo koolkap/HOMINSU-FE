@@ -1,14 +1,16 @@
 import { useState } from 'react'
 import ContentCard from './ContentCard'
 import type { ContentItem } from '../types'
+import { useTranslation } from 'react-i18next'
 
 const sorts = [
-  { id: 'latest', label: '최신' },
-  { id: 'popular', label: '인기' },
-  { id: 'rating', label: '별점' },
+  { id: 'latest', labelKey: 'catalog.sortLatest' },
+  { id: 'popular', labelKey: 'catalog.sortPopular' },
+  { id: 'rating', labelKey: 'catalog.sortRating' },
 ] as const
 
 export default function ContentGrid({ items }: { items: ContentItem[] }) {
+  const { t } = useTranslation()
   const [sort, setSort] = useState<(typeof sorts)[number]['id']>('latest')
 
   return (
@@ -16,9 +18,9 @@ export default function ContentGrid({ items }: { items: ContentItem[] }) {
       <div className="mx-auto max-w-[1600px]">
         <div className="mb-3 flex items-center justify-between">
           <h2 className="font-display text-base font-bold text-mist-100 sm:text-lg">
-            전체 콘텐츠{' '}
+            {t('catalog.allContent')}{' '}
             <span className="ml-1 text-sm font-medium text-mist-500">
-              {items.length}개
+              {t('common.itemCount', { count: items.length })}
             </span>
           </h2>
           <div className="flex gap-1 rounded-full bg-ink-800 p-1">
@@ -32,7 +34,7 @@ export default function ContentGrid({ items }: { items: ContentItem[] }) {
                     : 'text-mist-500 hover:text-mist-100'
                 }`}
               >
-                {s.label}
+                {t(s.labelKey)}
               </button>
             ))}
           </div>

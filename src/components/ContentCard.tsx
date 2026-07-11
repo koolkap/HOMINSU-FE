@@ -3,18 +3,18 @@ import { Heart, Star } from 'lucide-react'
 import type { ContentItem } from '../types'
 import ImageWithSkeleton from './ImageWithSkeleton'
 import { Link } from 'react-router-dom'
-
-function formatViews(n: number) {
-  return n >= 10000 ? `${(n / 10000).toFixed(1)}만` : n >= 1000 ? `${(n / 1000).toFixed(1)}K` : `${n}`
-}
+import { useTranslation } from 'react-i18next'
+import { intlLocale } from '../i18n'
 
 export default function ContentCard({ item }: { item: ContentItem }) {
+  const { i18n, t } = useTranslation()
   const [liked, setLiked] = useState(false)
+  const views = new Intl.NumberFormat(intlLocale(i18n.resolvedLanguage), { notation: 'compact', maximumFractionDigits: 1 }).format(item.views)
 
   return (
     <div className="group">
       <div className="relative">
-        <Link to={`/content/${item.id}`} aria-label={`${item.title} 상세 보기`}>
+        <Link to={`/content/${item.id}`} aria-label={t('catalog.detailsFor', { title: item.title })}>
         <ImageWithSkeleton
           seed={item.imageSeed}
           alt={item.title}
@@ -33,7 +33,7 @@ export default function ContentCard({ item }: { item: ContentItem }) {
           </span>
         )}
         <button
-          aria-label={liked ? '좋아요 취소' : '좋아요'}
+          aria-label={liked ? t('catalog.unlike') : t('catalog.like')}
           aria-pressed={liked}
           onClick={() => setLiked((v) => !v)}
           className={`absolute right-2 bottom-2 flex h-7 w-7 items-center justify-center rounded-full backdrop-blur-sm transition-colors ${
@@ -54,7 +54,7 @@ export default function ContentCard({ item }: { item: ContentItem }) {
           {item.rating.toFixed(1)}
         </span>
         <span className="text-mist-700">·</span>
-        <span>조회 {formatViews(item.views)}</span>
+        <span>{t('common.views', { count: views })}</span>
         <span className="text-mist-700">·</span>
         <span className="font-medium text-pulse-soft">{item.points}P</span>
       </div>

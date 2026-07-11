@@ -1,8 +1,10 @@
 import LiveCard from './LiveCard'
 import type { LiveItem } from '../types'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 export default function LiveSection({ items }: { items: LiveItem[] }) {
+  const { t } = useTranslation()
   return (
     <section className="mt-8 px-4 sm:px-6 lg:px-10 md:mt-10">
       <div className="mx-auto max-w-[1600px]">
@@ -10,14 +12,14 @@ export default function LiveSection({ items }: { items: LiveItem[] }) {
           <div className="flex items-center gap-2.5">
             <span className="h-2 w-2 animate-pulseDot rounded-full bg-signal" aria-hidden="true" />
             <h2 className="font-display text-base font-bold tracking-tight text-mist-100 sm:text-lg md:hidden">
-              라이브 중
+              {t('catalog.liveNow')}
             </h2>
             <h2 className="hidden font-display text-lg font-extrabold tracking-wide text-mist-100 md:block lg:text-xl">
               LIVE NOW
             </h2>
           </div>
           <Link to="/live" className="text-xs font-medium text-mist-500 transition-colors hover:text-mist-100 md:text-sm">
-            전체보기
+            {t('common.viewAll')}
           </Link>
         </div>
 

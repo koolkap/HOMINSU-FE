@@ -2,12 +2,12 @@ import { Users } from 'lucide-react'
 import type { LiveItem } from '../types'
 import ImageWithSkeleton from './ImageWithSkeleton'
 import { Link } from 'react-router-dom'
-
-function formatViewers(n: number) {
-  return n >= 1000 ? `${(n / 1000).toFixed(n % 1000 === 0 ? 0 : 1)}K명` : `${n}명`
-}
+import { useTranslation } from 'react-i18next'
+import { intlLocale } from '../i18n'
 
 export default function LiveCard({ item }: { item: LiveItem }) {
+  const { i18n } = useTranslation()
+  const viewers = new Intl.NumberFormat(intlLocale(i18n.resolvedLanguage), { notation: 'compact', maximumFractionDigits: 1 }).format(item.viewers)
   return (
     <Link to={`/content/${item.id}`} className="group block w-[220px] shrink-0 text-left sm:w-[260px] md:w-full md:shrink">
       <div className="relative">
@@ -25,7 +25,7 @@ export default function LiveCard({ item }: { item: LiveItem }) {
         </div>
         <div className="absolute left-2 bottom-2 flex items-center gap-1 rounded-md bg-black/55 px-2 py-1 text-[11px] font-semibold text-white backdrop-blur-sm">
           <Users size={12} strokeWidth={2.5} />
-          {formatViewers(item.viewers)}
+          {viewers}
         </div>
       </div>
       <h3 className="mt-2 line-clamp-1 text-[13.5px] font-semibold text-mist-100 md:mt-3 md:text-base">

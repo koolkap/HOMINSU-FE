@@ -1,0 +1,78 @@
+{
+  "meta": { "title": "Homeinsu | VR Content Platform" },
+  "language": { "label": "Language", "ko": "한국어", "en": "English" },
+  "common": {
+    "home": "Home", "live": "Live", "shorts": "Shorts", "points": "Points", "my": "MY",
+    "login": "Log in", "loading": "Loading...", "processing": "Processing...", "offlinePreview": "Offline preview",
+    "viewAll": "View all", "backHome": "Back to home", "views": "{{count}} views", "rating": "Rating {{rating}}",
+    "itemCount_one": "{{count}} item", "itemCount_other": "{{count}} items", "channelCount_one": "{{count}} channel is live.", "channelCount_other": "{{count}} channels are live."
+  },
+  "mode": { "aria": "Service mode" },
+  "topbar": { "brand": "Homeinsu", "search": "Search VR content", "tagline": "VR content platform" },
+  "login": {
+    "title": "Log in", "description": "Enter your email and password to keep enjoying VR content.", "close": "Close login dialog",
+    "email": "Email address", "password": "Password", "passwordPlaceholder": "Enter your password", "submitting": "Logging in...",
+    "failed": "Login failed.", "success": "Login successful", "welcome": "Welcome back. Keep exploring Homeinsu."
+  },
+  "hero": {
+    "alt": "Neo Seoul 2088 live night flight tour", "titleLine1": "Neo Seoul 2088:", "titleLine2": "Live Night Flight Tour",
+    "description": "Experience Seoul's future in 8K VR. Join the hottest live tour now.", "watch": "Watch now", "details": "Details"
+  },
+  "promo": {
+    "goTo": "Go to banner {{number}}",
+    "slides": {
+      "one": { "tag": "EVENT", "title": "New Member Event", "body": "Get 500P instantly!" },
+      "two": { "tag": "NEW", "title": "Neo Seoul 2088 Live", "body": "Watch the 8K VR night flight tour now" },
+      "three": { "tag": "REWARD", "title": "Weekly Mission Reward", "body": "Earn double points" }
+    }
+  },
+  "catalog": {
+    "liveNow": "Live now", "allContent": "All content", "sortLatest": "Latest", "sortPopular": "Popular", "sortRating": "Rating",
+    "detailsFor": "View details for {{title}}", "like": "Like", "unlike": "Remove like"
+  },
+  "livePage": { "title": "Live", "headlineLine1": "Experience this moment", "headlineLine2": "in 360°.", "loading": "Loading live channels..." },
+  "shorts": { "viewFull": "View full", "back": "Back home from Shorts" },
+  "detail": {
+    "title": "Content details", "fallbackTitle": "VR Content Preview", "unlockFailed": "Could not unlock this content.",
+    "play": "Play content", "previewEnded": "Preview ended · Unlock to continue", "defaultDescription": "Explore a new world with immersive spatial audio and high-resolution 360° video. Supports both VR headsets and mobile mode.",
+    "unlock": "Unlock this content", "watchPoints": "Watch with points", "checkingAd": "Checking ad...", "watchAd": "Watch an ad to continue",
+    "paying": "Processing payment...", "cash": "Pay with cash", "topup": "Add points", "unlocked": "Unlocked. Press play to start watching.",
+    "recommended": "You may also like"
+  },
+  "wallet": {
+    "title": "Points Wallet", "available": "Available balance", "offline": "Offline wallet preview", "realtime": "Live balance",
+    "topup": "Add points", "topupDescription": "Choose the amount you need and add it instantly.", "select": "Select →", "bonus": "BONUS +{{points}}P",
+    "success": "Top-up complete. Transaction ID: {{id}}", "failed": "Top-up request failed.", "recent": "Recent activity"
+  },
+  "profile": {
+    "points": "My points", "payments": "Payments", "verification": "Verification", "settings": "Settings", "switchAccount": "Log in with another account",
+    "logout": "Log out", "mockNotice": "Your real account information will appear when the backend is connected."
+  },
+  "creator": {
+    "search": "Search assets, projects, and creators", "newContent": "New content", "catalog": "Catalog", "projects": "My projects", "insights": "Insights", "settings": "Studio settings",
+    "proDescription": "Enable 8K rendering and spatial audio tools.", "headlineLine1": "Turn ideas into spaces", "headlineLine2": "clearer than reality.",
+    "description": "Explore proven VR projects and build your own interactive experiences.", "projectCatalog": "VR Project Catalog", "syncing": "Syncing...",
+    "projectCount_one": "{{count}} project", "projectCount_other": "{{count}} projects"
+  },
+  "operator": {
+    "controlOnline": "Control online", "title": "Operator Console", "description": "Control VR device status and deployments across every space.",
+    "accepted": "Command accepted successfully.", "failed": "Command processing failed.", "onlineDevices": "Online devices", "syncRate": "Content sync rate", "needsAttention": "Needs attention",
+    "unitCount_one": "{{count}} unit", "unitCount_other": "{{count}} units", "lastSeen": "Last seen {{value}}", "restart": "Restart",
+    "status": { "online": "Online", "offline": "Offline", "warning": "Warning" }, "noSync": "No sync history"
+  },
+  "api": { "unreachable": "Unable to connect to the server. Please try again shortly.", "failed": "Request failed. ({{status}})", "invalid": "The server response format is invalid." },
+  "mock": {
+    "categories": { "all": "All", "subscribe": "Subscriptions", "travel": "Travel", "game": "Games", "music": "Music", "edu": "Education", "sports": "Sports" },
+    "live": {
+      "oneTitle": "Santorini Sunset Live VR Tour", "oneChannel": "VR World Travel", "twoTitle": "K-POP VR Concert - Live Stage", "twoChannel": "VR Entertainment",
+      "threeTitle": "Seoraksan Fall Foliage Live Hike", "threeChannel": "Guide_Chulsoo", "fourTitle": "Tokyo Shibuya Night Drone Tour", "fourChannel": "CityFlyer"
+    },
+    "content": {
+      "oneTitle": "Explore the Human Body in VR", "twoTitle": "Dinosaur Age VR Time Machine", "threeTitle": "Ancient Egypt Pyramids VR", "fourTitle": "Explore the Solar System in VR", "fiveTitle": "Dive 3,000m into the Mariana Trench", "sixTitle": "ISS Docking Experience",
+      "academy": "Edu VR Academy", "spaceProvider": "SpaceDoctor_Luca", "oneDescription": "Explore the human body's incredible structure in an educational 360° VR experience.", "twoDescription": "Travel back to the age of dinosaurs and encounter a vivid ecosystem.", "threeDescription": "Explore the interior and history of ancient Egyptian pyramids in VR.", "fourDescription": "Travel through the planets and outer space in vivid VR.", "fiveDescription": "Discover the mysterious deep-sea ecosystem of the Mariana Trench.", "sixDescription": "Experience the International Space Station docking process firsthand."
+    },
+    "transactions": { "unlock": "Unlocked new content", "mission": "Weekly mission reward" },
+    "profileName": "Minsu", "locations": { "gangnam": "Gangnam VR Room A", "seongsu": "Seongsu Pop-up" },
+    "lastSeen": { "now": "just now", "minutes": "8 minutes ago", "hours": "2 hours ago" }
+  }
+}

@@ -1,6 +1,7 @@
 import { type FormEvent, useEffect, useState } from 'react'
 import { LockKeyhole, Mail, X } from 'lucide-react'
 import { login } from '../lib/api'
+import { useTranslation } from 'react-i18next'
 
 type LoginModalProps = {
   open: boolean
@@ -9,6 +10,7 @@ type LoginModalProps = {
 }
 
 export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps) {
+  const { t } = useTranslation()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   useEffect(() => {
@@ -46,7 +48,7 @@ export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps
       await login(String(form.get('email')), String(form.get('password')))
       onSuccess()
     } catch (reason) {
-      setError(reason instanceof Error ? reason.message : '로그인에 실패했습니다.')
+      setError(reason instanceof Error ? reason.message : t('login.failed'))
     } finally {
       setLoading(false)
     }
@@ -72,15 +74,15 @@ export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps
             <div>
               <p className="mb-2 text-xs font-bold uppercase tracking-[0.24em] text-signal">Homeinsu</p>
               <h2 id="login-modal-title" className="font-display text-2xl font-extrabold text-white">
-                로그인
+                {t('login.title')}
               </h2>
               <p className="mt-2 text-sm leading-6 text-mist-300">
-                이메일과 비밀번호를 입력해 VR 콘텐츠를 이어서 즐겨보세요.
+                {t('login.description')}
               </p>
             </div>
             <button
               type="button"
-              aria-label="로그인 창 닫기"
+              aria-label={t('login.close')}
               onClick={onClose}
               className="rounded-full border border-white/10 bg-white/5 p-2 text-mist-300 transition-colors hover:bg-white/10 hover:text-white"
             >
@@ -92,7 +94,7 @@ export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps
         <form className="space-y-5 px-6 pb-7 pt-6" onSubmit={handleSubmit}>
           <div className="space-y-2">
             <label htmlFor="login-email" className="text-sm font-semibold text-mist-100">
-              이메일 주소
+              {t('login.email')}
             </label>
             <div className="relative">
               <Mail
@@ -115,7 +117,7 @@ export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps
 
           <div className="space-y-2">
             <label htmlFor="login-password" className="text-sm font-semibold text-mist-100">
-              비밀번호
+              {t('login.password')}
             </label>
             <div className="relative">
               <LockKeyhole
@@ -130,7 +132,7 @@ export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps
                 autoComplete="current-password"
                 required
                 minLength={6}
-                placeholder="비밀번호 입력"
+                placeholder={t('login.passwordPlaceholder')}
                 className="w-full rounded-2xl border border-white/10 bg-ink-800/90 py-3.5 pl-12 pr-4 text-sm text-mist-100 placeholder:text-mist-500 transition-colors focus:border-signal/60 focus:outline-none"
               />
             </div>
@@ -141,7 +143,7 @@ export default function LoginModal({ open, onClose, onSuccess }: LoginModalProps
             disabled={loading}
             className="w-full rounded-2xl bg-signal px-5 py-3.5 text-sm font-extrabold text-white shadow-glow transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:cursor-wait disabled:opacity-60"
           >
-            {loading ? '로그인 중...' : '로그인'}
+            {loading ? t('login.submitting') : t('login.title')}
           </button>
 
           {error && <p role="alert" className="rounded-xl border border-signal/20 bg-signal/10 p-3 text-center text-xs leading-5 text-red-300">{error}</p>}

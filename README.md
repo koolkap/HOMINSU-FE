@@ -4,6 +4,11 @@ A responsive, mobile-first React + TypeScript recreation of the HomeInsu VR
 content platform home screen, built with Vite, Tailwind CSS, Framer Motion,
 and lucide-react icons.
 
+## Complete usage guides
+
+- [English guide](HOW_TO_USE_EN.md)
+- [한국어 사용 안내서](HOW_TO_USE_KO.md)
+
 ## Run it
 
 ```bash

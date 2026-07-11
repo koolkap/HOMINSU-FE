@@ -1,4 +1,5 @@
 import type { Category, ContentItem, Device, LiveItem, LoginResult, PointPackage, UserProfile, Wallet } from '../types'
+import i18n, { intlLocale } from '../i18n'
 
 const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api/v1').replace(/\/$/, '')
 
@@ -28,7 +29,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
       },
     })
   } catch {
-    throw new ApiError('서버에 연결할 수 없습니다. 잠시 후 다시 시도해 주세요.')
+    throw new ApiError(i18n.t('api.unreachable'))
   }
 
   let payload: Envelope<T> | { message?: string; error?: string | { message?: string } } | undefined
@@ -41,11 +42,11 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   if (!response.ok) {
     const details = payload as { message?: string; error?: string | { message?: string } } | undefined
     const errorMessage = typeof details?.error === 'string' ? details.error : details?.error?.message
-    throw new ApiError(details?.message || errorMessage || `요청에 실패했습니다. (${response.status})`, response.status)
+    throw new ApiError(details?.message || errorMessage || i18n.t('api.failed', { status: response.status }), response.status)
   }
 
   if (!payload || !('data' in payload)) {
-    throw new ApiError('서버 응답 형식이 올바르지 않습니다.', response.status)
+    throw new ApiError(i18n.t('api.invalid'), response.status)
   }
 
   return payload.data
@@ -184,7 +185,9 @@ function normalizeDisplayData(path: string, value: unknown): unknown {
         name: String(item.name ?? ''),
         location: String(venue.name ?? item.location ?? ''),
         status: String(item.status ?? 'offline'),
-        lastSync: item.last_seen_at ? new Date(String(item.last_seen_at)).toLocaleString('ko-KR') : '동기화 기록 없음',
+        lastSync: item.last_seen_at
+          ? new Intl.DateTimeFormat(intlLocale(), { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(String(item.last_seen_at)))
+          : i18n.t('operator.noSync'),
         model: item.headset_model ? String(item.headset_model) : undefined,
         firmware: item.firmware_version ? String(item.firmware_version) : undefined,
         battery: item.battery_level == null ? undefined : Number(item.battery_level),
