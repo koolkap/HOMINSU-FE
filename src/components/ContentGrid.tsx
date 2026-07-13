@@ -30,7 +30,7 @@ export default function ContentGrid({ items }: { items: ContentItem[] }) {
                 onClick={() => setSort(s.id)}
                 className={`rounded-full px-3 py-1 text-xs font-semibold transition-colors ${
                   sort === s.id
-                    ? 'bg-pulse text-white'
+                    ? 'bg-signal text-white'
                     : 'text-mist-500 hover:text-mist-100'
                 }`}
               >

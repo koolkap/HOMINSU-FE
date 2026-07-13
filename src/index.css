@@ -43,7 +43,7 @@
   --color-mist-400: 163 163 176;
   --color-mist-500: 139 139 152;
   --color-mist-700: 90 90 102;
-  --color-signal: var(--scheme-primary-dark);
+  --color-signal: var(--scheme-primary-light);
   --color-signal-dim: var(--scheme-primary-light);
   --color-pulse: var(--scheme-secondary-dark);
   --color-pulse-soft: var(--scheme-secondary-dark);

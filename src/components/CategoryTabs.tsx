@@ -19,7 +19,7 @@ export default function CategoryTabs({ active, onChange, categories }: CategoryT
                 onClick={() => onChange(c.id)}
                 className={`shrink-0 rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
                   isActive
-                    ? 'bg-pulse text-white shadow-glow'
+                    ? 'bg-signal text-white shadow-glow'
                     : 'bg-ink-800 text-mist-300 hover:bg-ink-700 hover:text-mist-100'
                 }`}
               >
