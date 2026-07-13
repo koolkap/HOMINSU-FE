@@ -28,7 +28,7 @@ export default function ContentCard({ item }: { item: ContentItem }) {
           {item.duration}
         </span>
         {item.isAdult && (
-          <span className="absolute right-2 top-2 flex h-5 w-5 items-center justify-center rounded-md bg-signal text-[10px] font-bold text-white">
+          <span className="absolute right-2 top-2 flex h-5 w-5 items-center justify-center rounded-md bg-red-500 text-[10px] font-bold text-white">
             19
           </span>
         )}
@@ -45,7 +45,7 @@ export default function ContentCard({ item }: { item: ContentItem }) {
       </div>
 
       <h3 className="mt-2 line-clamp-1 text-[13.5px] font-semibold text-mist-100">
-        <Link to={`/content/${item.id}`} className="hover:text-white">{item.title}</Link>
+        <Link to={`/content/${item.id}`} className="hover:text-signal">{item.title}</Link>
       </h3>
       <p className="mt-0.5 line-clamp-1 text-xs text-mist-500">{item.provider}</p>
       <div className="mt-1 flex items-center gap-1.5 text-xs text-mist-500">

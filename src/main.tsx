@@ -5,8 +5,10 @@ import './index.css'
 import { BrowserRouter } from 'react-router-dom'
 import { i18nReady } from './i18n'
 import AuthProvider from './auth/AuthProvider'
+import { initializeTheme } from './theme'
 
 void import('./lib/firebase')
+initializeTheme()
 
 void i18nReady.then(() => {
   ReactDOM.createRoot(document.getElementById('root')!).render(

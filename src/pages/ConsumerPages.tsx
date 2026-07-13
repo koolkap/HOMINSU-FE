@@ -53,11 +53,11 @@ export function HomePage({ onLogin }: { onLogin: () => void }) {
 
 function ConsumerHeader({ title }: { title: string }) {
   const { t } = useTranslation()
-  return <header className="sticky top-0 z-30 border-b border-white/5 bg-ink-950/90 px-4 py-4 backdrop-blur-md sm:px-6">
+  return <header className="sticky top-0 z-30 border-b border-mist-100/10 bg-ink-950/90 px-4 py-4 backdrop-blur-md sm:px-6">
     <div className="mx-auto flex max-w-6xl items-center gap-3">
-      <Link to="/" aria-label={t('common.backHome')} className="rounded-full bg-white/5 p-2 text-mist-300 hover:text-white"><ChevronLeft size={20} /></Link>
-      <h1 className="font-display text-lg font-extrabold text-white">{title}</h1>
-      <Link to="/profile" className="ml-auto text-xs font-bold text-mist-300 hover:text-white">MY</Link>
+      <Link to="/" aria-label={t('common.backHome')} className="rounded-full bg-mist-100/5 p-2 text-mist-300 hover:text-signal"><ChevronLeft size={20} /></Link>
+      <h1 className="font-display text-lg font-extrabold text-mist-100">{title}</h1>
+      <Link to="/profile" className="ml-auto text-xs font-bold text-mist-300 hover:text-signal">MY</Link>
     </div>
   </header>
 }
@@ -72,7 +72,7 @@ export function LivePage() {
     <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6">
       <div className="mb-6 overflow-hidden rounded-3xl border border-signal/20 bg-gradient-to-br from-signal/25 via-ink-900 to-ink-950 p-6 sm:p-9">
         <div className="flex items-center gap-2 text-xs font-extrabold tracking-[0.2em] text-signal"><Radio size={15} /> {t('catalog.liveNow').toUpperCase()}</div>
-        <h2 className="mt-3 max-w-xl text-2xl font-extrabold text-white sm:text-4xl">{t('livePage.headlineLine1')}<br />{t('livePage.headlineLine2')}</h2>
+        <h2 className="mt-3 max-w-xl text-2xl font-extrabold text-mist-100 sm:text-4xl">{t('livePage.headlineLine1')}<br />{t('livePage.headlineLine2')}</h2>
         <p className="mt-3 text-sm text-mist-300">{loading ? t('livePage.loading') : t('common.channelCount', { count: live.length })}{isMock && ` · ${t('common.offlinePreview')}`}</p>
       </div>
       <div className="grid grid-cols-1 gap-x-5 gap-y-7 sm:grid-cols-2 lg:grid-cols-3">
@@ -140,8 +140,8 @@ export function ContentDetailPage() {
         <span className="absolute bottom-4 left-4 rounded bg-black/50 px-2 py-1 text-xs">{t('detail.preview').toUpperCase()} 00:30</span>
       </div>
       <div className="mt-6 grid gap-8 lg:grid-cols-[1fr_340px]">
-        <div><div className="flex gap-2 text-xs font-bold text-signal"><span>8K VR</span><span>·</span><span>{item.duration}</span>{isMock && <span>· {t('common.offlinePreview').toUpperCase()}</span>}</div><h1 className="mt-2 text-2xl font-extrabold text-white sm:text-4xl">{loading ? t('common.loading') : item.title}</h1><p className="mt-2 text-sm text-mist-300">{item.provider} · {t('common.rating', { rating: new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }).format(item.rating) })} · {t('common.views', { count: new Intl.NumberFormat(locale).format(item.views) })}</p><p className="mt-6 max-w-2xl leading-7 text-mist-300">{item.description || t('detail.defaultDescription')}</p></div>
-        {!unlocked && <aside className="rounded-3xl border border-white/10 bg-ink-900 p-5"><p className="text-xs font-bold text-mist-500">{t('detail.unlock')}</p><p className="mt-2 text-3xl font-black text-white">{new Intl.NumberFormat(locale).format(item.points)}P</p><div className="mt-5 space-y-2"><button disabled={pending !== null} onClick={() => handleUnlock('points')} className="w-full rounded-xl bg-signal py-3 text-sm font-extrabold disabled:opacity-50">{pending === 'points' ? t('common.processing') : t('detail.watchPoints')}</button><button disabled={pending !== null} onClick={() => handleUnlock('ad')} className="w-full rounded-xl border border-white/15 bg-white/5 py-3 text-sm font-bold disabled:opacity-50">{pending === 'ad' ? t('detail.checkingAd') : t('detail.watchAd')}</button><button disabled={pending !== null} onClick={() => handleUnlock('cash')} className="w-full rounded-xl border border-white/15 bg-white/5 py-3 text-sm font-bold disabled:opacity-50">{pending === 'cash' ? t('detail.paying') : t('detail.cash')}</button></div>{error && <p role="alert" className="mt-3 rounded-lg bg-signal/10 p-3 text-xs text-red-300">{error}</p>}<Link to="/points" className="mt-4 block text-center text-xs font-bold text-mist-500 hover:text-white">{t('detail.topup')}</Link></aside>}
+        <div><div className="flex gap-2 text-xs font-bold text-signal"><span>8K VR</span><span>·</span><span>{item.duration}</span>{isMock && <span>· {t('common.offlinePreview').toUpperCase()}</span>}</div><h1 className="mt-2 text-2xl font-extrabold text-mist-100 sm:text-4xl">{loading ? t('common.loading') : item.title}</h1><p className="mt-2 text-sm text-mist-300">{item.provider} · {t('common.rating', { rating: new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }).format(item.rating) })} · {t('common.views', { count: new Intl.NumberFormat(locale).format(item.views) })}</p><p className="mt-6 max-w-2xl leading-7 text-mist-300">{item.description || t('detail.defaultDescription')}</p></div>
+        {!unlocked && <aside className="rounded-3xl border border-mist-100/10 bg-ink-900 p-5"><p className="text-xs font-bold text-mist-500">{t('detail.unlock')}</p><p className="mt-2 text-3xl font-black text-mist-100">{new Intl.NumberFormat(locale).format(item.points)}P</p><div className="mt-5 space-y-2"><button disabled={pending !== null} onClick={() => handleUnlock('points')} className="w-full rounded-xl bg-signal py-3 text-sm font-extrabold text-white disabled:opacity-50">{pending === 'points' ? t('common.processing') : t('detail.watchPoints')}</button><button disabled={pending !== null} onClick={() => handleUnlock('ad')} className="w-full rounded-xl border border-mist-100/15 bg-mist-100/5 py-3 text-sm font-bold disabled:opacity-50">{pending === 'ad' ? t('detail.checkingAd') : t('detail.watchAd')}</button><button disabled={pending !== null} onClick={() => handleUnlock('cash')} className="w-full rounded-xl border border-mist-100/15 bg-mist-100/5 py-3 text-sm font-bold disabled:opacity-50">{pending === 'cash' ? t('detail.paying') : t('detail.cash')}</button></div>{error && <p role="alert" className="mt-3 rounded-lg bg-red-500/10 p-3 text-xs text-red-500">{error}</p>}<Link to="/points" className="mt-4 block text-center text-xs font-bold text-mist-500 hover:text-signal">{t('detail.topup')}</Link></aside>}
         {unlocked && <aside className="rounded-3xl border border-emerald-400/20 bg-emerald-400/10 p-5 text-sm font-bold text-emerald-300">{t('detail.unlocked')}</aside>}
       </div>
       <section className="mt-12"><h2 className="mb-4 text-lg font-extrabold">{t('detail.recommended')}</h2><div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">{contentItems.slice(1, 5).map((content) => <ContentCard key={content.id} item={content} />)}</div></section>

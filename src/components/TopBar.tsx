@@ -12,7 +12,7 @@ export default function TopBar({ onLoginClick }: TopBarProps) {
   const { t } = useTranslation()
   const { user } = useAuth()
   return (
-    <header className="sticky top-0 z-30 border-b border-white/5 bg-ink-950/90 px-4 pb-3 pt-[max(0.75rem,env(safe-area-inset-top))] backdrop-blur-md sm:px-6 lg:px-10">
+    <header className="sticky top-0 z-30 border-b border-mist-100/10 bg-ink-950/90 px-4 pb-3 pt-[max(0.75rem,env(safe-area-inset-top))] backdrop-blur-md sm:px-6 lg:px-10">
       <div className="mx-auto flex max-w-[1600px] items-center gap-6">
         {/* logo + primary nav */}
         <div className="flex items-center gap-8">
@@ -20,7 +20,7 @@ export default function TopBar({ onLoginClick }: TopBarProps) {
             {t('topbar.brand')}
           </Link>
           <nav className="hidden items-center gap-6 text-sm font-medium text-mist-300 md:flex">
-            <NavLink to="/" className="text-mist-100 transition-colors hover:text-white">
+            <NavLink to="/" className="text-mist-100 transition-colors hover:text-signal">
               {t('common.home')}
             </NavLink>
             <NavLink to="/live" className="transition-colors hover:text-mist-100">{t('common.live')}</NavLink>
@@ -40,14 +40,14 @@ export default function TopBar({ onLoginClick }: TopBarProps) {
             <input
               type="text"
               placeholder={t('topbar.search')}
-              className="w-full rounded-full border border-white/5 bg-ink-800/80 py-2.5 pl-11 pr-4 text-sm text-mist-100 placeholder:text-mist-500 transition-colors focus:border-pulse/50 focus:outline-none"
+              className="w-full rounded-full border border-mist-100/10 bg-ink-800/80 py-2.5 pl-11 pr-4 text-sm text-mist-100 placeholder:text-mist-500 transition-colors focus:border-pulse/50 focus:outline-none"
             />
           </label>
         </div>
 
         {/* right side: login (desktop) */}
         <div className="ml-auto hidden md:block">
-          {user ? <Link to="/profile" aria-label={t('auth.signedInAs', { name: user.name })} className="flex items-center gap-2.5 rounded-full border border-white/10 bg-white/5 py-1.5 pl-1.5 pr-3 transition hover:border-white/20 hover:bg-white/10">
+          {user ? <Link to="/profile" aria-label={t('auth.signedInAs', { name: user.name })} className="flex items-center gap-2.5 rounded-full border border-mist-100/10 bg-mist-100/5 py-1.5 pl-1.5 pr-3 transition hover:border-mist-100/20 hover:bg-mist-100/10">
             <UserAvatar user={user} className="h-8 w-8" size={64} />
             <span className="max-w-28 truncate text-xs font-bold text-mist-100">{user.name}</span>
           </Link> : <button

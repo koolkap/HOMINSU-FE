@@ -8,6 +8,16 @@
     "itemCount_one": "{{count}} item", "itemCount_other": "{{count}} items", "channelCount_one": "{{count}} channel is live.", "channelCount_other": "{{count}} channels are live."
   },
   "mode": { "aria": "Service mode" },
+  "theme": {
+    "open": "Open color theme", "close": "Close color theme", "title": "Color theme", "description": "Preview a consistent primary and secondary color system across every page.",
+    "appearance": "Appearance", "light": "Light", "dark": "Dark", "system": "System", "combinations": "Color combinations",
+    "schemes": {
+      "berry": { "name": "Rose & Violet", "description": "Bold, expressive, and premium" },
+      "ocean": { "name": "Blue & Teal", "description": "Trusted, clear, and modern" },
+      "indigo": { "name": "Indigo & Amber", "description": "Confident with warm contrast" },
+      "forest": { "name": "Emerald & Sky", "description": "Fresh, balanced, and accessible" }
+    }
+  },
   "auth": { "avatarAlt": "{{name}} profile avatar", "signedInAs": "Signed in as {{name}}", "profile": "Open profile" },
   "topbar": { "brand": "Homeinsu", "search": "Search VR content", "tagline": "VR content platform" },
   "login": {

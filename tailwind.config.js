@@ -5,30 +5,31 @@ export default {
     extend: {
       colors: {
         ink: {
-          950: '#0a0a0d',
-          900: '#111116',
-          850: '#16161d',
-          800: '#1c1c24',
-          700: '#26262f',
-          600: '#35353f',
+          950: 'rgb(var(--color-ink-950) / <alpha-value>)',
+          900: 'rgb(var(--color-ink-900) / <alpha-value>)',
+          850: 'rgb(var(--color-ink-850) / <alpha-value>)',
+          800: 'rgb(var(--color-ink-800) / <alpha-value>)',
+          700: 'rgb(var(--color-ink-700) / <alpha-value>)',
+          600: 'rgb(var(--color-ink-600) / <alpha-value>)',
         },
         signal: {
-          DEFAULT: '#ff3b5c',
-          dim: '#c92a48',
+          DEFAULT: 'rgb(var(--color-signal) / <alpha-value>)',
+          dim: 'rgb(var(--color-signal-dim) / <alpha-value>)',
         },
         pulse: {
-          DEFAULT: '#8b5cf6',
-          soft: '#a78bfa',
+          DEFAULT: 'rgb(var(--color-pulse) / <alpha-value>)',
+          soft: 'rgb(var(--color-pulse-soft) / <alpha-value>)',
         },
         rose: {
-          deep: '#7a2856',
-          bright: '#c23a7e',
+          deep: 'rgb(var(--color-rose-deep) / <alpha-value>)',
+          bright: 'rgb(var(--color-rose-bright) / <alpha-value>)',
         },
         mist: {
-          100: '#f4f4f6',
-          300: '#c7c7d1',
-          500: '#8b8b98',
-          700: '#5a5a66',
+          100: 'rgb(var(--color-mist-100) / <alpha-value>)',
+          300: 'rgb(var(--color-mist-300) / <alpha-value>)',
+          400: 'rgb(var(--color-mist-400) / <alpha-value>)',
+          500: 'rgb(var(--color-mist-500) / <alpha-value>)',
+          700: 'rgb(var(--color-mist-700) / <alpha-value>)',
         },
       },
       fontFamily: {
@@ -39,8 +40,8 @@ export default {
         xl2: '1.25rem',
       },
       boxShadow: {
-        card: '0 4px 24px -8px rgba(0,0,0,0.5)',
-        glow: '0 0 0 1px rgba(255,59,92,0.4), 0 8px 24px -6px rgba(255,59,92,0.35)',
+        card: '0 18px 50px -24px rgb(var(--color-shadow) / 0.55)',
+        glow: '0 0 0 1px rgb(var(--color-signal) / 0.35), 0 8px 24px -6px rgb(var(--color-signal) / 0.32)',
       },
       keyframes: {
         shimmer: {

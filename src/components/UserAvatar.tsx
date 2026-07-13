@@ -12,7 +12,7 @@ export default function UserAvatar({ user, className = 'h-8 w-8', size = 96 }: {
   return <img
     src={user.avatarUrl || gravatarUrl(user.email, size)}
     alt={t('auth.avatarAlt', { name: user.name })}
-    className={`${className} shrink-0 rounded-full border border-white/15 bg-ink-800 object-cover`}
+    className={`${className} shrink-0 rounded-full border border-mist-100/15 bg-ink-800 object-cover`}
     referrerPolicy="no-referrer"
   />
 }

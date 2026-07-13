@@ -16,10 +16,10 @@ export default function LiveCard({ item }: { item: LiveItem }) {
           alt={item.title}
           width={560}
           height={360}
-          className="aspect-[4/3] ring-1 ring-white/5 transition-transform duration-300 group-hover:scale-[1.02] group-focus-visible:scale-[1.02] group-hover:ring-signal/50 md:aspect-[16/11]"
+          className="aspect-[4/3] ring-1 ring-mist-100/10 transition-transform duration-300 group-hover:scale-[1.02] group-focus-visible:scale-[1.02] group-hover:ring-signal/50 md:aspect-[16/11]"
           src={item.imageUrl}
         />
-        <div className="absolute left-2 top-2 flex items-center gap-1.5 rounded-md bg-signal px-2 py-1 text-[11px] font-bold text-white shadow-md">
+        <div className="absolute left-2 top-2 flex items-center gap-1.5 rounded-md bg-red-500 px-2 py-1 text-[11px] font-bold text-white shadow-md">
           <span className="h-1.5 w-1.5 animate-pulseDot rounded-full bg-white" />
           {t('common.live').toUpperCase()}
         </div>

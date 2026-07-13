@@ -8,6 +8,16 @@
     "itemCount_one": "{{count}}개", "itemCount_other": "{{count}}개", "channelCount_one": "{{count}}개 채널이 방송 중입니다.", "channelCount_other": "{{count}}개 채널이 방송 중입니다."
   },
   "mode": { "aria": "서비스 모드" },
+  "theme": {
+    "open": "컬러 테마 열기", "close": "컬러 테마 닫기", "title": "컬러 테마", "description": "모든 페이지에 일관된 주 컬러와 보조 컬러 조합을 미리 확인하세요.",
+    "appearance": "화면 모드", "light": "라이트", "dark": "다크", "system": "시스템", "combinations": "컬러 조합",
+    "schemes": {
+      "berry": { "name": "로즈 & 바이올렛", "description": "대담하고 감각적인 프리미엄 조합" },
+      "ocean": { "name": "블루 & 틸", "description": "신뢰감 있고 선명한 모던 조합" },
+      "indigo": { "name": "인디고 & 앰버", "description": "따뜻한 대비를 더한 자신감 있는 조합" },
+      "forest": { "name": "에메랄드 & 스카이", "description": "산뜻하고 균형 잡힌 접근성 높은 조합" }
+    }
+  },
   "auth": { "avatarAlt": "{{name}} 프로필 이미지", "signedInAs": "{{name}} 계정으로 로그인됨", "profile": "프로필 열기" },
   "topbar": { "brand": "홈인슈", "search": "가상현실 콘텐츠 검색", "tagline": "VR 콘텐츠 플랫폼" },
   "login": {

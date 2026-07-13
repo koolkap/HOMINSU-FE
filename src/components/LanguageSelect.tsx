@@ -42,7 +42,7 @@ export default function LanguageSelect() {
         aria-haspopup="listbox"
         aria-expanded={open}
         onClick={() => setOpen((current) => !current)}
-        className="language-control flex h-7 items-center gap-1 rounded-full border border-white/10 bg-white/5 px-2 text-[10px] font-bold tracking-normal text-mist-300 transition hover:border-white/25 hover:text-white"
+        className="language-control flex h-7 items-center gap-1 rounded-full border border-mist-100/10 bg-mist-100/5 px-2 text-[10px] font-bold tracking-normal text-mist-300 transition hover:border-mist-100/25 hover:text-mist-100"
       >
         <Languages size={12} aria-hidden="true" />
         <span>{t(`language.${language}`)}</span>
@@ -50,7 +50,7 @@ export default function LanguageSelect() {
       </button>
 
       {open && (
-        <div role="listbox" aria-label={t('language.label')} className="absolute right-0 top-[calc(100%+0.4rem)] z-[80] min-w-28 overflow-hidden rounded-xl border border-white/15 bg-ink-950 p-1 shadow-card">
+        <div role="listbox" aria-label={t('language.label')} className="absolute right-0 top-[calc(100%+0.4rem)] z-[80] min-w-28 overflow-hidden rounded-xl border border-mist-100/15 bg-ink-950 p-1 shadow-card">
           {languages.map((item) => {
             const selected = item === language
             return <button
@@ -59,7 +59,7 @@ export default function LanguageSelect() {
               role="option"
               aria-selected={selected}
               onClick={() => void selectLanguage(item)}
-              className={`language-control flex w-full items-center rounded-lg px-2.5 py-2 text-left text-xs font-bold tracking-normal transition ${selected ? 'bg-white/10 text-white' : 'text-mist-400 hover:bg-white/5 hover:text-white'}`}
+              className={`language-control flex w-full items-center rounded-lg px-2.5 py-2 text-left text-xs font-bold tracking-normal transition ${selected ? 'bg-mist-100/10 text-mist-100' : 'text-mist-400 hover:bg-mist-100/5 hover:text-mist-100'}`}
             >
               {t(`language.${item}`)}
               {selected && <Check size={13} className="ml-auto text-emerald-400" aria-hidden="true" />}

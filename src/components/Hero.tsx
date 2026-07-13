@@ -17,8 +17,8 @@ export default function Hero() {
           rounded="rounded-none"
         />
         {/* left-to-right and bottom scrims so the copy stays readable over any photo */}
-        <div className="absolute inset-0 bg-gradient-to-r from-ink-950 via-ink-950/55 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/10 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/55 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-transparent" />
 
         <div className="relative mx-auto flex h-full max-w-[1600px] flex-col justify-center px-6 lg:px-10">
           <h1 className="max-w-2xl font-display text-4xl font-extrabold leading-[1.15] text-white lg:text-[3.25rem]">
@@ -26,7 +26,7 @@ export default function Hero() {
             <br />
             {t('hero.titleLine2')}
           </h1>
-          <p className="mt-4 max-w-lg text-base text-mist-300 lg:text-lg">
+          <p className="mt-4 max-w-lg text-base text-white/75 lg:text-lg">
             {t('hero.description')}
           </p>
           <div className="mt-8 flex items-center gap-3">
