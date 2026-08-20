@@ -774,6 +774,17 @@ NEXT_PUBLIC_LIVE_HLS_URL=http://localhost:8080/live/stream.m3u8
 NEXT_PUBLIC_PREVIEW_SECONDS=15
 ~~~
 
+For the Railway deployment, configure the frontend service variables as follows. The API/WebSocket domain is the Hominsu backend; the HLS domain must be the separate Railway SRS service public HTTP domain mapped to port 8080.
+
+~~~dotenv
+NEXT_PUBLIC_API_URL=https://hominsu-be-production.up.railway.app
+NEXT_PUBLIC_WS_URL=wss://hominsu-be-production.up.railway.app
+NEXT_PUBLIC_LIVE_HLS_URL=https://<SRS_HTTP_DOMAIN>/live/insta-001.m3u8
+NEXT_PUBLIC_PREVIEW_SECONDS=15
+~~~
+
+Replace `<SRS_HTTP_DOMAIN>` with the SRS service's generated Railway domain. Do not use the RTMP TCP proxy hostname for HLS, and do not use the backend domain unless the backend explicitly proxies SRS HLS.
+
 Only values prefixed with NEXT_PUBLIC_ are exposed to browser code. Never put a signing secret, payment secret, or server-to-server ad credential in this file.
 
 ### 2.3 Directory structure
