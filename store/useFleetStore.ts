@@ -53,7 +53,7 @@ const clampBattery = (value: unknown) => {
 
 export const useFleetStore = create<FleetState>((set) => ({
   devicesById: byId(initialDevices), deviceOrder: initialDevices.map((device) => device.id), selectedDeviceIds: [],
-  syncVideoUrl: process.env.NEXT_PUBLIC_LIVE_HLS_URL ?? "http://localhost:8080/live/stream.m3u8",
+  syncVideoUrl: process.env.NEXT_PUBLIC_LIVE_HLS_URL ?? "",
   connectionState: "idle", lastError: null, pendingCommands: {},
   hydrate: (devices) => set((state) => {
     const next = byId(devices);

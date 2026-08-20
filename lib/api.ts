@@ -1,6 +1,6 @@
 import type { MediaContent } from "@/types/media";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "https://hominsu-be-production.up.railway.app";
 
 async function request<T>(path: string, options: RequestInit & { token?: string } = {}): Promise<T> {
   const { token, ...init } = options;
