@@ -20,7 +20,7 @@ type FleetState = {
   setCommandState: (commandId: string, state: "pending" | "accepted" | "failed") => void;
 };
 
-const initialDevices: FleetDevice[] = [
+const initialDeviceSeed: Array<[string, string, string, string, number, DeviceStatus, string]> = [
   ["HS-01", "Quest Pro", "Studio A", "10.0.15.52", 75, "ONLINE", "v2.4.0"],
   ["HS-02", "Quest 3", "Studio A", "10.0.15.53", 82, "ONLINE", "v2.4.0"],
   ["HS-03", "Quest Pro", "Studio A", "10.0.15.54", 45, "ONLINE", "v2.4.0"],
@@ -33,7 +33,9 @@ const initialDevices: FleetDevice[] = [
   ["HS-10", "Quest 2", "Studio C", "10.0.15.61", 38, "UPDATING", "v2.3.8"],
   ["HS-11", "Quest Pro", "Studio D", "10.0.15.62", 88, "ONLINE", "v2.4.0"],
   ["HS-12", "Quest 3", "Studio D", "10.0.15.63", 71, "ONLINE", "v2.4.0"],
-].map(([id, model, group, ipAddress, batteryLevel, status, firmwareVersion]) => ({
+];
+
+const initialDevices: FleetDevice[] = initialDeviceSeed.map(([id, model, group, ipAddress, batteryLevel, status, firmwareVersion]) => ({
   id, name: `Headset ${id.slice(-2)}`, model, group, ipAddress, osVersion: firmwareVersion, firmwareVersion,
   batteryLevel, status: status as DeviceStatus, currentVideoTitle: null, currentVideoUrl: null,
   lastSeenAt: new Date().toISOString(), updatedAt: new Date().toISOString(),

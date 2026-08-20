@@ -3,6 +3,7 @@
 import { FormEvent, useState } from "react";
 import { Bell, LogIn, Menu, Search, X } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
 import api from "@/lib/api";
 import { useAuthStore } from "@/store/useAuthStore";
 
@@ -42,7 +43,7 @@ export default function PortalHeader() {
     <header className="portal-header">
       <button className="mobile-menu-button" type="button" aria-label="Open navigation"><Menu size={21} /></button>
       <button className="portal-brand" type="button" onClick={() => router.push("/")} aria-label="HOMINSU home"><span className="brand-mark">H</span><span><strong>HOMINSU</strong><small>VR STUDIO</small></span></button>
-      <nav className="header-links"><a className={pathname === "/" ? "active" : ""} href="/">Discover</a><a className={pathname === "/shorts" ? "active" : ""} href="/shorts">Shorts</a></nav>
+      <nav className="header-links"><Link className={pathname === "/" ? "active" : ""} href="/">Discover</Link><Link className={pathname === "/shorts" ? "active" : ""} href="/shorts">Shorts</Link></nav>
       <form className="portal-search" onSubmit={search}><Search size={18} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search immersive content" aria-label="Search immersive content" /></form>
       <button className="header-icon-button" type="button" aria-label="Notifications"><Bell size={18} /></button>
       {token && user ? <button className="profile-chip" type="button" onClick={() => router.push("/profile")}><span>{user.email.slice(0, 1).toUpperCase()}</span>{user.points}P</button> : <button className="header-login" type="button" onClick={() => setShowLogin(true)}><LogIn size={16} />Sign in</button>}

@@ -17,10 +17,19 @@ export default function PaywallOverlay({ contentId, price, onUnlocked, onDismiss
 
   useEffect(() => {
     if (state !== "ad") return;
-    if (countdown === 0) { setState("claiming"); const timer = window.setTimeout(() => { setState("unlocked"); onUnlocked(); }, 700); return () => window.clearTimeout(timer); }
+    if (countdown === 0) {
+      const timer = window.setTimeout(() => setState("claiming"), 0);
+      return () => window.clearTimeout(timer);
+    }
     const timer = window.setTimeout(() => setCountdown((value) => value - 1), 1000);
     return () => window.clearTimeout(timer);
   }, [countdown, onUnlocked, state]);
+
+  useEffect(() => {
+    if (state !== "claiming") return;
+    const timer = window.setTimeout(() => { setState("unlocked"); onUnlocked(); }, 700);
+    return () => window.clearTimeout(timer);
+  }, [onUnlocked, state]);
 
   async function unlockWithPoints() {
     setState("deducting"); setMessage("");

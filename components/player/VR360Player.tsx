@@ -65,6 +65,8 @@ export default function VR360Player({ src, previewSeconds = 15, locked = false, 
     let texture: THREE.VideoTexture | null = null;
     let geometry: THREE.SphereGeometry | null = null;
     let material: THREE.MeshBasicMaterial | null = null;
+    let rendererCleanup: (() => void) | null = null;
+    let fallbackTimer: number | null = null;
     let disposed = false;
     let yaw = 0;
     let pitch = 0;
@@ -136,7 +138,7 @@ export default function VR360Player({ src, previewSeconds = 15, locked = false, 
       const xr = (navigator as Navigator & { xr?: XrSystemLike }).xr;
       if (xr) xr.isSessionSupported("immersive-vr").then(setXrReady).catch(() => setXrReady(false));
 
-      return () => {
+      rendererCleanup = () => {
         disposed = true;
         window.removeEventListener("resize", resize);
         renderer?.domElement.removeEventListener("pointerdown", pointerDown);
@@ -149,10 +151,12 @@ export default function VR360Player({ src, previewSeconds = 15, locked = false, 
         rendererRef.current = null;
       };
     } catch {
-      setWebglFallback(true);
+      fallbackTimer = window.setTimeout(() => setWebglFallback(true), 0);
     }
 
     return () => {
+      rendererCleanup?.();
+      if (fallbackTimer !== null) window.clearTimeout(fallbackTimer);
       hls?.destroy();
       video.pause();
       video.removeAttribute("src");
@@ -161,10 +165,6 @@ export default function VR360Player({ src, previewSeconds = 15, locked = false, 
       video.removeEventListener("play", onPlay);
       video.removeEventListener("pause", onPause);
       video.removeEventListener("error", onError);
-      renderer?.setAnimationLoop(null);
-      renderer?.dispose();
-      texture?.dispose(); geometry?.dispose(); material?.dispose();
-      rendererRef.current = null;
     };
   }, [onPreviewExpired, previewSeconds, setProgress, setStorePlaying, src]);
 

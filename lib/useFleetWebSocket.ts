@@ -17,7 +17,7 @@ const telemetryPatch = (id: string, raw: Record<string, unknown>): DevicePatch =
     ["ipAddress", "ipAddress", "ip_address"], ["name", "name", "device_name"], ["model", "model", "device_model"],
     ["group", "group", "group_name"], ["osVersion", "osVersion", "os_version"], ["firmwareVersion", "firmwareVersion", "firmware_version"],
   ];
-  for (const [target, camel, snake] of fields) if (raw[camel] !== undefined || raw[snake] !== undefined) patch[target] = String(raw[camel] ?? raw[snake]);
+  for (const [target, camel, snake] of fields) if (raw[camel] !== undefined || raw[snake] !== undefined) Object.assign(patch, { [target]: String(raw[camel] ?? raw[snake]) });
   const title = raw.currentVideoTitle ?? raw.current_video_title;
   if (title !== undefined) patch.currentVideoTitle = title == null ? null : String(title);
   const url = raw.currentVideoUrl ?? raw.current_video_url;
@@ -109,12 +109,13 @@ export function useFleetWebSocket(options: { url?: string; reconnect?: boolean }
     mounted.current = true;
     connectRef.current = connect;
     connect();
+    const pendingPatches = patches.current;
     return () => {
       mounted.current = false;
       connectRef.current = () => undefined;
       if (reconnectTimer.current !== null) window.clearTimeout(reconnectTimer.current);
       if (frame.current !== null) window.cancelAnimationFrame(frame.current);
-      patches.current.clear();
+      pendingPatches.clear();
       socketRef.current?.close(1000, "operator route closed");
       socketRef.current = null;
     };
