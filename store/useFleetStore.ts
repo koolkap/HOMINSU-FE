@@ -1,64 +1,99 @@
-import { create } from 'zustand';
+import { create } from "zustand";
+import type { DevicePatch, DeviceStatus, FleetConnectionState, FleetDevice } from "@/types/fleet";
 
-export type DeviceStatus = 'ONLINE' | 'OFFLINE' | 'UPDATING' | 'LOW_BATTERY';
-
-export interface Device {
-  id: string;
-  name: string;
-  ip_address: string;
-  battery_level: number;
-  status: DeviceStatus;
-  firmware: string;
-  model: string;
-  current_video?: string;
-}
-
-interface FleetState {
-  devices: Device[];
-  selectedDevices: string[];
+type FleetState = {
+  devicesById: Record<string, FleetDevice>;
+  deviceOrder: string[];
+  selectedDeviceIds: string[];
   syncVideoUrl: string;
-  setDevices: (devices: Device[]) => void;
-  updateDevice: (id: string, data: Partial<Device>) => void;
+  connectionState: FleetConnectionState;
+  lastError: string | null;
+  pendingCommands: Record<string, "pending" | "accepted" | "failed">;
+  hydrate: (devices: FleetDevice[]) => void;
+  patchDevices: (patches: DevicePatch[]) => void;
   toggleDevice: (id: string) => void;
-  selectAll: () => void;
+  selectOnline: () => void;
   clearSelection: () => void;
   setSyncVideoUrl: (url: string) => void;
-}
+  setConnectionState: (state: FleetConnectionState) => void;
+  setError: (error: string | null) => void;
+  setCommandState: (commandId: string, state: "pending" | "accepted" | "failed") => void;
+};
 
-const MOCK_DEVICES: Device[] = [
-  { id: 'HS-01', name: 'Headset 01', ip_address: '10.0.15.52', battery_level: 75, status: 'ONLINE', firmware: 'v2.4.0', model: 'Quest Pro', current_video: '항공] 우음도' },
-  { id: 'HS-02', name: 'Headset 02', ip_address: '10.0.15.53', battery_level: 82, status: 'ONLINE', firmware: 'v2.4.0', model: 'Quest 3', current_video: '' },
-  { id: 'HS-03', name: 'Headset 03', ip_address: '10.0.15.54', battery_level: 45, status: 'ONLINE', firmware: 'v2.4.0', model: 'Quest Pro', current_video: '' },
-  { id: 'HS-04', name: 'Headset 04', ip_address: '10.0.15.55', battery_level: 18, status: 'LOW_BATTERY', firmware: 'v2.3.8', model: 'Quest 2', current_video: '' },
-  { id: 'HS-05', name: 'Headset 05', ip_address: '10.0.15.56', battery_level: 92, status: 'ONLINE', firmware: 'v2.4.0', model: 'Quest Pro', current_video: '' },
-  { id: 'HS-06', name: 'Headset 06', ip_address: '10.0.15.57', battery_level: 12, status: 'LOW_BATTERY', firmware: 'v2.3.8', model: 'Quest 2', current_video: '' },
-  { id: 'HS-07', name: 'Headset 07', ip_address: '10.0.15.58', battery_level: 65, status: 'UPDATING', firmware: 'v2.3.8', model: 'Quest 3', current_video: '' },
-  { id: 'HS-08', name: 'Headset 08', ip_address: '10.0.15.59', battery_level: 0, status: 'OFFLINE', firmware: 'v2.4.0', model: 'Quest Pro', current_video: '' },
-  { id: 'HS-09', name: 'Headset 09', ip_address: '10.0.15.60', battery_level: 55, status: 'ONLINE', firmware: 'v2.4.0', model: 'Quest 3', current_video: '' },
-  { id: 'HS-10', name: 'Headset 10', ip_address: '10.0.15.61', battery_level: 38, status: 'UPDATING', firmware: 'v2.3.8', model: 'Quest 2', current_video: '' },
-  { id: 'HS-11', name: 'Headset 11', ip_address: '10.0.15.62', battery_level: 88, status: 'ONLINE', firmware: 'v2.4.0', model: 'Quest Pro', current_video: '' },
-  { id: 'HS-12', name: 'Headset 12', ip_address: '10.0.15.63', battery_level: 71, status: 'ONLINE', firmware: 'v2.4.0', model: 'Quest 3', current_video: '' },
-];
-
-export const useFleetStore = create<FleetState>()((set) => ({
-  devices: MOCK_DEVICES,
-  selectedDevices: [],
-  syncVideoUrl: 'http://localhost:8080/live/stream.m3u8',
-  setDevices: (devices) => set({ devices }),
-  updateDevice: (id, data) =>
-    set((state) => ({
-      devices: state.devices.map((d) => (d.id === id ? { ...d, ...data } : d)),
-    })),
-  toggleDevice: (id) =>
-    set((state) => ({
-      selectedDevices: state.selectedDevices.includes(id)
-        ? state.selectedDevices.filter((d) => d !== id)
-        : [...state.selectedDevices, id],
-    })),
-  selectAll: () =>
-    set((state) => ({
-      selectedDevices: state.devices.filter((d) => d.status === 'ONLINE').map((d) => d.id),
-    })),
-  clearSelection: () => set({ selectedDevices: [] }),
-  setSyncVideoUrl: (url) => set({ syncVideoUrl: url }),
+const initialDevices: FleetDevice[] = [
+  ["HS-01", "Quest Pro", "Studio A", "10.0.15.52", 75, "ONLINE", "v2.4.0"],
+  ["HS-02", "Quest 3", "Studio A", "10.0.15.53", 82, "ONLINE", "v2.4.0"],
+  ["HS-03", "Quest Pro", "Studio A", "10.0.15.54", 45, "ONLINE", "v2.4.0"],
+  ["HS-04", "Quest 2", "Studio B", "10.0.15.55", 18, "LOW_BATTERY", "v2.3.8"],
+  ["HS-05", "Quest Pro", "Studio B", "10.0.15.56", 92, "ONLINE", "v2.4.0"],
+  ["HS-06", "Quest 2", "Studio B", "10.0.15.57", 12, "LOW_BATTERY", "v2.3.8"],
+  ["HS-07", "Quest 3", "Studio C", "10.0.15.58", 65, "UPDATING", "v2.3.8"],
+  ["HS-08", "Quest Pro", "Studio C", "10.0.15.59", 0, "OFFLINE", "v2.4.0"],
+  ["HS-09", "Quest 3", "Studio C", "10.0.15.60", 55, "ONLINE", "v2.4.0"],
+  ["HS-10", "Quest 2", "Studio C", "10.0.15.61", 38, "UPDATING", "v2.3.8"],
+  ["HS-11", "Quest Pro", "Studio D", "10.0.15.62", 88, "ONLINE", "v2.4.0"],
+  ["HS-12", "Quest 3", "Studio D", "10.0.15.63", 71, "ONLINE", "v2.4.0"],
+].map(([id, model, group, ipAddress, batteryLevel, status, firmwareVersion]) => ({
+  id, name: `Headset ${id.slice(-2)}`, model, group, ipAddress, osVersion: firmwareVersion, firmwareVersion,
+  batteryLevel, status: status as DeviceStatus, currentVideoTitle: null, currentVideoUrl: null,
+  lastSeenAt: new Date().toISOString(), updatedAt: new Date().toISOString(),
 }));
+
+const byId = (devices: FleetDevice[]) => devices.reduce<Record<string, FleetDevice>>((result, device) => {
+  result[device.id] = device;
+  return result;
+}, {});
+
+const clampBattery = (value: unknown) => {
+  const number = typeof value === "number" ? value : Number(value);
+  return Number.isFinite(number) ? Math.max(0, Math.min(100, Math.round(number))) : 0;
+};
+
+export const useFleetStore = create<FleetState>((set) => ({
+  devicesById: byId(initialDevices), deviceOrder: initialDevices.map((device) => device.id), selectedDeviceIds: [],
+  syncVideoUrl: process.env.NEXT_PUBLIC_LIVE_HLS_URL ?? "http://localhost:8080/live/stream.m3u8",
+  connectionState: "idle", lastError: null, pendingCommands: {},
+  hydrate: (devices) => set((state) => {
+    const next = byId(devices);
+    return { devicesById: next, deviceOrder: devices.map((device) => device.id), selectedDeviceIds: state.selectedDeviceIds.filter((id) => Boolean(next[id])) };
+  }),
+  patchDevices: (patches) => set((state) => {
+    const nextDevices = { ...state.devicesById };
+    let changed = false;
+    for (const { id, patch } of patches) {
+      const current = nextDevices[id];
+      if (!current) continue;
+      const next = { ...current, ...patch, batteryLevel: patch.batteryLevel === undefined ? current.batteryLevel : clampBattery(patch.batteryLevel), updatedAt: patch.updatedAt ?? new Date().toISOString() };
+      if (Object.keys(next).some((key) => next[key as keyof FleetDevice] !== current[key as keyof FleetDevice])) {
+        nextDevices[id] = next;
+        changed = true;
+      }
+    }
+    return changed ? { devicesById: nextDevices } : state;
+  }),
+  toggleDevice: (id) => set((state) => ({ selectedDeviceIds: state.selectedDeviceIds.includes(id) ? state.selectedDeviceIds.filter((selectedId) => selectedId !== id) : [...state.selectedDeviceIds, id] })),
+  selectOnline: () => set((state) => ({ selectedDeviceIds: state.deviceOrder.filter((id) => state.devicesById[id]?.status === "ONLINE") })),
+  clearSelection: () => set({ selectedDeviceIds: [] }),
+  setSyncVideoUrl: (syncVideoUrl) => set({ syncVideoUrl }),
+  setConnectionState: (connectionState) => set({ connectionState }),
+  setError: (lastError) => set({ lastError }),
+  setCommandState: (commandId, commandState) => set((state) => ({ pendingCommands: { ...state.pendingCommands, [commandId]: commandState } })),
+}));
+
+export const normalizeDevice = (raw: Record<string, unknown>, fallbackId?: string): FleetDevice => {
+  const get = (camel: string, snake: string, fallback: unknown) => raw[camel] ?? raw[snake] ?? fallback;
+  const now = new Date().toISOString();
+  const id = String(get("id", "device_id", fallbackId ?? ""));
+  return {
+    id, name: String(get("name", "device_name", id)), model: String(get("model", "device_model", "Unknown")),
+    group: String(get("group", "group_name", "Unassigned")), ipAddress: String(get("ipAddress", "ip_address", "Unknown")),
+    osVersion: String(get("osVersion", "os_version", get("firmware", "firmware_version", "Unknown"))),
+    firmwareVersion: String(get("firmwareVersion", "firmware_version", get("firmware", "firmware", "Unknown"))),
+    batteryLevel: clampBattery(get("batteryLevel", "battery_level", 0)), status: String(raw.status ?? "UNKNOWN").toUpperCase() as DeviceStatus,
+    currentVideoTitle: raw.currentVideoTitle == null && raw.current_video_title == null ? null : String(raw.currentVideoTitle ?? raw.current_video_title),
+    currentVideoUrl: raw.currentVideoUrl == null && raw.current_video_url == null ? null : String(raw.currentVideoUrl ?? raw.current_video_url),
+    lastSeenAt: String(get("lastSeenAt", "last_seen_at", now)), updatedAt: String(get("updatedAt", "updated_at", now)),
+  };
+};
+
+export const normalizeSnapshot = (rawDevices: unknown[]) => rawDevices.filter((device): device is Record<string, unknown> => Boolean(device) && typeof device === "object").map((device) => normalizeDevice(device));
