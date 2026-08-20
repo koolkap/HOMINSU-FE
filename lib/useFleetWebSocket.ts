@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef } from "react";
 import { normalizeSnapshot, useFleetStore } from "@/store/useFleetStore";
 import type { DevicePatch, FleetServerMessage, SyncPlayCommand } from "@/types/fleet";
 
-const DEFAULT_URL = "wss://hominsu-be-production.up.railway.app/ws/operator";
+const DEFAULT_URL = "ws://localhost:8000/ws/operator";
 const asObject = (value: unknown) => value && typeof value === "object" ? value as Record<string, unknown> : null;
 const asString = (value: unknown) => typeof value === "string" && value.length > 0 ? value : null;
 

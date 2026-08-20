@@ -17,11 +17,13 @@ export default function VRWatchScreen({ contentId }: { contentId: string }) {
   const [paywallDismissed, setPaywallDismissed] = useState(false);
 
   useEffect(() => {
+    // The built-in demo routes use labels such as `reef`; the API expects UUIDs.
+    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(contentId)) return;
     api.content.get(contentId).then((item) => setContent(normalizeContent(item as unknown as Record<string, unknown>))).catch(() => undefined);
   }, [contentId]);
 
   const isPaid = content.pricePoints > 0;
-  const source = content.mediaUrl ?? process.env.NEXT_PUBLIC_LIVE_HLS_URL ?? "";
+  const source = content.mediaUrl ?? process.env.NEXT_PUBLIC_LIVE_HLS_URL ?? "http://localhost:8080/live/insta-001.m3u8";
   const showPaywall = isPaid && previewExpired && !unlocked && !paywallDismissed;
   const related = useMemo(() => fallbackContent.filter((item) => item.id !== content.id).slice(0, 3), [content.id]);
 
