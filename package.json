@@ -1,5 +1,5 @@
 {
-  "name": "hominsu-temp-scaffold",
+  "name": "hominsu-frontend",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,9 +9,16 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "axios": "^1.19.0",
+    "hls.js": "^1.7.1",
+    "lucide-react": "^1.33.0",
     "next": "16.3.1",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "socket.io-client": "^4.8.3",
+    "video.js": "^8.24.0",
+    "videojs-vr": "^2.0.0",
+    "zustand": "^5.0.15"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
