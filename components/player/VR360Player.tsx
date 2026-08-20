@@ -24,6 +24,7 @@ export default function VR360Player({ src, previewSeconds = 15, locked = false, 
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [formatWarning, setFormatWarning] = useState<string | null>(null);
   const setStorePlaying = usePlayerStore((state) => state.setPlaying);
   const setProgress = usePlayerStore((state) => state.setProgress);
   const setStoreMuted = usePlayerStore((state) => state.setMuted);
@@ -101,10 +102,17 @@ export default function VR360Player({ src, previewSeconds = 15, locked = false, 
     const onPlay = () => { setPlaying(true); setStorePlaying(true); };
     const onPause = () => { setPlaying(false); setStorePlaying(false); };
     const onError = () => setError("The stream could not be loaded. Check the HLS origin and CORS settings.");
+    const onLoadedMetadata = () => {
+      const ratio = video.videoWidth / Math.max(1, video.videoHeight);
+      setFormatWarning(Math.abs(ratio - 2) > 0.08
+        ? `360 source is ${video.videoWidth}×${video.videoHeight} (${ratio.toFixed(2)}:1). Use a 2:1 equirectangular OBS output for correct projection.`
+        : null);
+    };
     video.addEventListener("timeupdate", onTime);
     video.addEventListener("play", onPlay);
     video.addEventListener("pause", onPause);
     video.addEventListener("error", onError);
+    video.addEventListener("loadedmetadata", onLoadedMetadata);
     video.muted = true;
 
     if (Hls.isSupported()) {
@@ -238,6 +246,7 @@ export default function VR360Player({ src, previewSeconds = 15, locked = false, 
       video.removeEventListener("play", onPlay);
       video.removeEventListener("pause", onPause);
       video.removeEventListener("error", onError);
+      video.removeEventListener("loadedmetadata", onLoadedMetadata);
     };
   }, [onPreviewExpired, previewSeconds, setProgress, setStorePlaying, src]);
 
@@ -248,6 +257,7 @@ export default function VR360Player({ src, previewSeconds = 15, locked = false, 
       <video ref={videoRef} className={webglFallback ? "native-player" : "native-player visually-hidden"} playsInline muted controls={webglFallback} preload="metadata" />
       {!webglFallback && <div className="player-hint">Swipe or drag to look around · pinch to zoom · {xrReady ? "VR ready" : "360 view"}</div>}
     </div>
+    {formatWarning && <p className="player-warning" style={{ margin: 0, padding: "8px 14px", background: "rgba(244, 199, 95, .1)", color: "#f4c75f", fontSize: 11 }}>{formatWarning}</p>}
     <div className="player-toolbar"><button type="button" className="player-control" onClick={togglePlay} disabled={locked} aria-label={playing ? "Pause" : "Play"}>{playing ? <Pause size={18} /> : <Play size={18} fill="currentColor" />}</button><button type="button" className="player-control" onClick={toggleMute} aria-label={muted ? "Unmute" : "Mute"}>{muted ? <VolumeX size={18} /> : <Volume2 size={18} />}</button><button type="button" className="player-control" onClick={() => zoom(-5)} aria-label="Zoom in"><ZoomIn size={17} /></button><button type="button" className="player-control" onClick={() => zoom(5)} aria-label="Zoom out"><ZoomOut size={17} /></button><button type="button" className="player-control" onClick={resetView} aria-label="Reset view"><RotateCcw size={17} /></button><span className="player-toolbar-spacer" />{xrReady && <button type="button" className="player-vr-button" onClick={enterVr} disabled={inVr}>{inVr ? "IN VR" : "ENTER VR"}</button>}<button type="button" className="player-control" onClick={() => document.querySelector(".player-frame")?.requestFullscreen()} aria-label="Fullscreen"><Maximize size={18} /></button></div>
     {error && <p className="player-error"><RotateCcw size={14} />{error}</p>}
   </div>;
