@@ -21,7 +21,7 @@ export default function VRWatchScreen({ contentId }: { contentId: string }) {
   }, [contentId]);
 
   const isPaid = content.pricePoints > 0;
-  const source = content.mediaUrl ?? process.env.NEXT_PUBLIC_LIVE_HLS_URL ?? "http://localhost:8080/live/stream.m3u8";
+  const source = content.mediaUrl ?? process.env.NEXT_PUBLIC_LIVE_HLS_URL ?? "";
   const showPaywall = isPaid && previewExpired && !unlocked && !paywallDismissed;
   const related = useMemo(() => fallbackContent.filter((item) => item.id !== content.id).slice(0, 3), [content.id]);
 
