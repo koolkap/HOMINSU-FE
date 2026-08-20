@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Hls from "hls.js";
 import * as THREE from "three";
-import { Maximize, Pause, Play, RotateCcw, Volume2, VolumeX } from "lucide-react";
+import { Maximize, Pause, Play, RotateCcw, Volume2, VolumeX, ZoomIn, ZoomOut } from "lucide-react";
 import { usePlayerStore } from "@/store/usePlayerStore";
 
 type XrSessionLike = { addEventListener: (name: string, listener: () => void) => void; end: () => Promise<void> };
@@ -14,6 +14,8 @@ export default function VR360Player({ src, previewSeconds = 15, locked = false, 
   const mountRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
+  const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
+  const viewRef = useRef({ yaw: 0, pitch: 0 });
   const xrSessionRef = useRef<XrSessionLike | null>(null);
   const previewNotified = useRef(false);
   const [webglFallback, setWebglFallback] = useState(false);
@@ -25,6 +27,19 @@ export default function VR360Player({ src, previewSeconds = 15, locked = false, 
   const setStorePlaying = usePlayerStore((state) => state.setPlaying);
   const setProgress = usePlayerStore((state) => state.setProgress);
   const setStoreMuted = usePlayerStore((state) => state.setMuted);
+
+  const resetView = useCallback(() => {
+    viewRef.current = { yaw: 0, pitch: 0 };
+    const camera = cameraRef.current;
+    if (camera) camera.rotation.set(0, 0, 0);
+  }, []);
+
+  const zoom = useCallback((amount: number) => {
+    const camera = cameraRef.current;
+    if (!camera) return;
+    camera.fov = Math.max(45, Math.min(100, camera.fov + amount));
+    camera.updateProjectionMatrix();
+  }, []);
 
   const togglePlay = useCallback(async () => {
     const video = videoRef.current;
@@ -68,11 +83,12 @@ export default function VR360Player({ src, previewSeconds = 15, locked = false, 
     let rendererCleanup: (() => void) | null = null;
     let fallbackTimer: number | null = null;
     let disposed = false;
-    let yaw = 0;
-    let pitch = 0;
+    const pointers = new Map<number, { x: number; y: number }>();
     let dragging = false;
     let lastX = 0;
     let lastY = 0;
+    let pinchStartDistance = 0;
+    let pinchStartFov = 75;
 
     const onTime = () => {
       setProgress(video.currentTime, Number.isFinite(video.duration) ? video.duration : 0);
@@ -108,12 +124,15 @@ export default function VR360Player({ src, previewSeconds = 15, locked = false, 
       renderer.setSize(mount.clientWidth, mount.clientHeight);
       renderer.xr.enabled = true;
       renderer.domElement.className = "player-canvas";
+      renderer.domElement.style.touchAction = "none";
       mount.appendChild(renderer.domElement);
       rendererRef.current = renderer;
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(75, mount.clientWidth / Math.max(1, mount.clientHeight), 0.1, 1100);
       camera.position.set(0, 0, 0.01);
       camera.rotation.order = "YXZ";
+      cameraRef.current = camera;
+      viewRef.current = { yaw: 0, pitch: 0 };
       texture = new THREE.VideoTexture(video);
       texture.colorSpace = THREE.SRGBColorSpace;
       texture.minFilter = THREE.LinearFilter;
@@ -125,15 +144,67 @@ export default function VR360Player({ src, previewSeconds = 15, locked = false, 
       scene.add(new THREE.Mesh(geometry, material));
       const render = () => { if (!disposed && renderer) renderer.render(scene, camera); };
       renderer.setAnimationLoop(render);
-      const rotate = () => { camera.rotation.set(pitch, yaw, 0); };
-      const pointerDown = (event: PointerEvent) => { if (renderer?.xr.isPresenting) return; dragging = true; lastX = event.clientX; lastY = event.clientY; renderer?.domElement.setPointerCapture(event.pointerId); };
-      const pointerMove = (event: PointerEvent) => { if (!dragging) return; yaw -= (event.clientX - lastX) * 0.004; pitch = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, pitch - (event.clientY - lastY) * 0.004)); lastX = event.clientX; lastY = event.clientY; rotate(); };
-      const pointerUp = () => { dragging = false; };
+      const rotate = () => { camera.rotation.set(viewRef.current.pitch, viewRef.current.yaw, 0); };
+      const pointerDistance = () => {
+        const [first, second] = [...pointers.values()];
+        return first && second ? Math.hypot(first.x - second.x, first.y - second.y) : 0;
+      };
+      const pointerDown = (event: PointerEvent) => {
+        if (renderer?.xr.isPresenting) return;
+        pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+        renderer?.domElement.setPointerCapture(event.pointerId);
+        if (pointers.size === 1) {
+          dragging = true;
+          lastX = event.clientX;
+          lastY = event.clientY;
+        } else if (pointers.size === 2) {
+          dragging = false;
+          pinchStartDistance = pointerDistance();
+          pinchStartFov = camera.fov;
+        }
+      };
+      const pointerMove = (event: PointerEvent) => {
+        if (!pointers.has(event.pointerId)) return;
+        pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+        if (pointers.size >= 2) {
+          const currentDistance = pointerDistance();
+          if (pinchStartDistance > 0 && currentDistance > 0) {
+            camera.fov = Math.max(45, Math.min(100, pinchStartFov * pinchStartDistance / currentDistance));
+            camera.updateProjectionMatrix();
+          }
+          return;
+        }
+        if (!dragging) return;
+        const sensitivity = 0.004 * (camera.fov / 75);
+        viewRef.current.yaw -= (event.clientX - lastX) * sensitivity;
+        viewRef.current.pitch = Math.max(-Math.PI / 2 + 0.05, Math.min(Math.PI / 2 - 0.05, viewRef.current.pitch - (event.clientY - lastY) * sensitivity));
+        lastX = event.clientX;
+        lastY = event.clientY;
+        rotate();
+      };
+      const pointerUp = (event: PointerEvent) => {
+        pointers.delete(event.pointerId);
+        if (renderer?.domElement.hasPointerCapture(event.pointerId)) renderer.domElement.releasePointerCapture(event.pointerId);
+        if (pointers.size === 1) {
+          const remaining = [...pointers.values()][0];
+          dragging = true;
+          lastX = remaining.x;
+          lastY = remaining.y;
+        } else {
+          dragging = false;
+          pinchStartDistance = 0;
+        }
+      };
+      const wheel = (event: WheelEvent) => {
+        event.preventDefault();
+        zoom(event.deltaY > 0 ? 4 : -4);
+      };
       const resize = () => { if (!renderer) return; camera.aspect = mount.clientWidth / Math.max(1, mount.clientHeight); camera.updateProjectionMatrix(); renderer.setSize(mount.clientWidth, mount.clientHeight); };
       renderer.domElement.addEventListener("pointerdown", pointerDown);
       renderer.domElement.addEventListener("pointermove", pointerMove);
       renderer.domElement.addEventListener("pointerup", pointerUp);
       renderer.domElement.addEventListener("pointercancel", pointerUp);
+      renderer.domElement.addEventListener("wheel", wheel, { passive: false });
       window.addEventListener("resize", resize);
       const xr = (navigator as Navigator & { xr?: XrSystemLike }).xr;
       if (xr) xr.isSessionSupported("immersive-vr").then(setXrReady).catch(() => setXrReady(false));
@@ -145,10 +216,12 @@ export default function VR360Player({ src, previewSeconds = 15, locked = false, 
         renderer?.domElement.removeEventListener("pointermove", pointerMove);
         renderer?.domElement.removeEventListener("pointerup", pointerUp);
         renderer?.domElement.removeEventListener("pointercancel", pointerUp);
+        renderer?.domElement.removeEventListener("wheel", wheel);
         renderer?.setAnimationLoop(null);
         renderer?.dispose();
         texture?.dispose(); geometry?.dispose(); material?.dispose();
         rendererRef.current = null;
+        cameraRef.current = null;
       };
     } catch {
       fallbackTimer = window.setTimeout(() => setWebglFallback(true), 0);
@@ -173,9 +246,9 @@ export default function VR360Player({ src, previewSeconds = 15, locked = false, 
   return <div className="player-frame">
     <div ref={mountRef} className={webglFallback ? "player-stage fallback" : "player-stage"}>
       <video ref={videoRef} className={webglFallback ? "native-player" : "native-player visually-hidden"} playsInline muted controls={webglFallback} preload="metadata" />
-      {!webglFallback && <div className="player-hint">Drag to look around · {xrReady ? "VR ready" : "360 view"}</div>}
+      {!webglFallback && <div className="player-hint">Swipe or drag to look around · pinch to zoom · {xrReady ? "VR ready" : "360 view"}</div>}
     </div>
-    <div className="player-toolbar"><button type="button" className="player-control" onClick={togglePlay} disabled={locked} aria-label={playing ? "Pause" : "Play"}>{playing ? <Pause size={18} /> : <Play size={18} fill="currentColor" />}</button><button type="button" className="player-control" onClick={toggleMute} aria-label={muted ? "Unmute" : "Mute"}>{muted ? <VolumeX size={18} /> : <Volume2 size={18} />}</button><span className="player-toolbar-spacer" />{xrReady && <button type="button" className="player-vr-button" onClick={enterVr} disabled={inVr}>{inVr ? "IN VR" : "ENTER VR"}</button>}<button type="button" className="player-control" onClick={() => document.querySelector(".player-frame")?.requestFullscreen()} aria-label="Fullscreen"><Maximize size={18} /></button></div>
+    <div className="player-toolbar"><button type="button" className="player-control" onClick={togglePlay} disabled={locked} aria-label={playing ? "Pause" : "Play"}>{playing ? <Pause size={18} /> : <Play size={18} fill="currentColor" />}</button><button type="button" className="player-control" onClick={toggleMute} aria-label={muted ? "Unmute" : "Mute"}>{muted ? <VolumeX size={18} /> : <Volume2 size={18} />}</button><button type="button" className="player-control" onClick={() => zoom(-5)} aria-label="Zoom in"><ZoomIn size={17} /></button><button type="button" className="player-control" onClick={() => zoom(5)} aria-label="Zoom out"><ZoomOut size={17} /></button><button type="button" className="player-control" onClick={resetView} aria-label="Reset view"><RotateCcw size={17} /></button><span className="player-toolbar-spacer" />{xrReady && <button type="button" className="player-vr-button" onClick={enterVr} disabled={inVr}>{inVr ? "IN VR" : "ENTER VR"}</button>}<button type="button" className="player-control" onClick={() => document.querySelector(".player-frame")?.requestFullscreen()} aria-label="Fullscreen"><Maximize size={18} /></button></div>
     {error && <p className="player-error"><RotateCcw size={14} />{error}</p>}
   </div>;
 }
